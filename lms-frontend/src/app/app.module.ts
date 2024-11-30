@@ -9,6 +9,7 @@ import { UserDashboardComponent } from './components/user-dashboard/user-dashboa
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { BookCatalogComponentComponent } from './components/book-catalog-component/book-catalog-component.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
+import { BorrowBooksComponent } from './components/borrow-books/borrow-books.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { BookDetailsComponent } from './components/book-details/book-details.com
     UserDashboardComponent,
     AdminDashboardComponent,
     BookCatalogComponentComponent,
-    BookDetailsComponent
+    BookDetailsComponent,
+    BorrowBooksComponent
   ],
   imports: [
     BrowserModule,
