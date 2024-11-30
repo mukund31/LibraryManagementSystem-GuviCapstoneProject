@@ -1,0 +1,31 @@
+<div class="container">
+    <h2>Register</h2>
+    <form (ngSubmit)="onSubmit()">
+        <div>
+          <label for="username">Username:</label>
+          <input type="text" id="username" [(ngModel)]="user.username" name="username" required />
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <input type="email" id="email" [(ngModel)]="user.email" name="email" required />
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <input type="password" id="password" [(ngModel)]="user.password" name="password" required />
+        </div>
+        <div>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" [(ngModel)]="user.confirmPassword" name="confirmPassword" required />
+        </div>
+        <div>
+          <label for="phoneNum">Phone Number:</label>
+          <input type="tel" id="phoneNum" [(ngModel)]="user.phoneNum" name="phoneNum" required />
+        </div>
+        <button type="submit">Register</button>
+      </form>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
+  </div>
+  

@@ -1,0 +1,32 @@
+# Ignore node_modules and build files in Angular frontend
+lms-frontend/node_modules/
+lms-frontend/dist/
+lms-frontend/.angular/cache/
+
+# Ignore environment files in Angular frontend
+lms-frontend/src/environments/environment*.ts
+
+# Ignore IntelliJ IDEA project files
+*.iml
+.idea/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Spring Boot target directory
+backend/target/
+
+# Ignore logs
+*.log
+*.log.*
+
+# Ignore IDE settings
+*.swp
+*.swo
+.vscode/
+*.classpath
+*.project
+
+# Ignore system-generated files
+Thumbs.db
+desktop.ini
