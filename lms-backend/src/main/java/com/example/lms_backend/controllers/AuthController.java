@@ -33,7 +33,8 @@ public class AuthController {
         try {
             if (authService.validateUser(user.getUsername(), user.getPassword())) {
                 String token = jwtUtil.generateToken(user.getUsername());
-                return ResponseEntity.ok(new AuthResponse(token));
+                String role = authService.getUserRole(user.getUsername());
+                return ResponseEntity.ok(new AuthResponse(token, role));
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         } catch (Exception e) {

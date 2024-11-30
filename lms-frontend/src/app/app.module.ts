@@ -6,12 +6,14 @@ import { AppRoutingModule } from './app-routing.module'; // Keep this
 import { FormsModule } from '@angular/forms'; // Correctly import FormsModule
 import { RegisterComponent } from './components/register/register.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,

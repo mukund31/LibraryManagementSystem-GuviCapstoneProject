@@ -23,7 +23,6 @@ public class AuthService {
             }
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setActive(true);
-            user.setRole("User");
             userRepository.save(user);
             return "User registered successfully!";
         }
@@ -49,4 +48,10 @@ public class AuthService {
             return false;
         }
     }
+
+    public String getUserRole(String username) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        return userOpt.map(User::getRole).orElse("user");
+    }
+
 }

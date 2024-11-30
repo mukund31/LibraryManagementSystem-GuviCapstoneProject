@@ -24,12 +24,24 @@ export class LoginComponent {
       (response: any) => {
         if (response.token) {
           this.authService.setToken(response.token);
-          this.router.navigate(['/dashboard']);
+          // this.router.navigate(['/dashboard']);
+          const userRole = response.role;
+
+          console.log(response);
+          if (userRole === 'admin') {
+            this.router.navigate(['/admin-dashboard']);
+          } else {
+            this.router.navigate(['/user-dashboard']);
+          }
         }
       },
       (error) => {
         this.errorMessage = 'Invalid credentials. Please try again.';
       }
     );
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);  // Navigate to the register page
   }
 }

@@ -1,1 +1,8 @@
+<div *ngIf="authService.isAdmin()">
+    <a routerLink="/admin-dashboard">Admin Dashboard</a>
+</div>
+<div *ngIf="authService.isUser()">
+    <a routerLink="/user-dashboard">User Dashboard</a>
+</div>
+  
 <router-outlet></router-outlet>

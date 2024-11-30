@@ -13,7 +13,8 @@ export class RegisterComponent {
     password: '',
     confirmPassword: '',
     email: '',
-    phoneNum: ''
+    phoneNum: '',
+    role: ''
   };
 
   errorMessage: string | null = null;
