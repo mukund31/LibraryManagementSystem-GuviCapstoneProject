@@ -1,0 +1,14 @@
+<!-- book-details.component.html -->
+<div *ngIf="errorMessage" class="error-message text-red-500">
+    {{ errorMessage }}
+  </div>
+  
+  <div *ngIf="book" class="book-details">
+    <h2 class="text-2xl font-bold">{{ book.title }}</h2>
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p><strong>Genre:</strong> {{ book.genre }}</p>
+    <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+    <p><strong>Copies Available:</strong> {{ book.copiesAvailable }}</p>
+    <p><strong>Location:</strong> {{ book.location }}</p>
+  </div>
+  

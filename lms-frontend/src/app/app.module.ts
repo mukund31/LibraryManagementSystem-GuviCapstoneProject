@@ -7,13 +7,17 @@ import { FormsModule } from '@angular/forms'; // Correctly import FormsModule
 import { RegisterComponent } from './components/register/register.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { BookCatalogComponentComponent } from './components/book-catalog-component/book-catalog-component.component';
+import { BookDetailsComponent } from './components/book-details/book-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
     UserDashboardComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    BookCatalogComponentComponent,
+    BookDetailsComponent
   ],
   imports: [
     BrowserModule,
