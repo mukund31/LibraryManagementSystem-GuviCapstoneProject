@@ -10,8 +10,9 @@ import { BookService } from '../../services/book.service';
 export class BookCatalogComponentComponent {
   books: Book[] = [];
   query: string = '';
+  searchTypes: boolean[] = [true, true, true]; // title, author, genere
   noResultsFound: boolean = false;
-  
+
   constructor(private bookService: BookService) {}
 
   ngOnInit(): void {
@@ -19,7 +20,7 @@ export class BookCatalogComponentComponent {
   }
 
   getAllBooks(): void {
-    this.bookService.getAllBooks().subscribe(data => {
+    this.bookService.getAllBooks().subscribe((data) => {
       this.books = data;
       this.noResultsFound = this.books.length === 0;
     });
@@ -29,16 +30,10 @@ export class BookCatalogComponentComponent {
     if (this.query.trim() === '') {
       this.getAllBooks();
     } else {
-      this.bookService.searchBooks(this.query).subscribe(data => {
+      this.bookService.searchBooks(this.query, this.searchTypes).subscribe((data) => {
         this.books = data;
         this.noResultsFound = this.books.length === 0;
       });
     }
-  }
-
-  addBook(book: Book): void {
-    this.bookService.addBook(book).subscribe(data => {
-      this.books.push(data);
-    });
   }
 }

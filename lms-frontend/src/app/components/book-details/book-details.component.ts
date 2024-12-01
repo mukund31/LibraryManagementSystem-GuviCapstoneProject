@@ -40,7 +40,6 @@ export class BookDetailsComponent implements OnInit {
         this.borrowBookService.borrowBook(userId, this.book.bookId).subscribe(
           (response) => {
             this.borrowStatus = response;
-            // this.borrowStatus = `Book borrowed successfully. Due date: ${response.dueDate}`;
             this.book!.copiesAvailable--;
           },
           (error) => {

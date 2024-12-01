@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Book } from '../models/book.model';
 
 @Injectable({
@@ -15,12 +15,39 @@ export class BookService {
   addBook(book: Book): Observable<Book> {
     return this.http.post<Book>(`${this.apiUrl}/add`, book);
   }
-
-  searchBooks(query?: string): Observable<Book[]> {
+  
+  searchBooks(query?: string, searchTypes: boolean[] = [true, true, true]): Observable<Book[]> {
     let params = new HttpParams();
-    if (query) params = params.set('query', query);
-    return this.http.get<Book[]>(`${this.apiUrl}/search`, { params });
-  }
+
+    if (query) {
+        params = params.set('query', query);
+    }
+
+    return this.http.get<Book[]>(`${this.apiUrl}/search`, { params }).pipe(
+        map((books: Book[]) => {
+            if (searchTypes.length > 0 && query) {
+                return books.filter(book => {
+                    return searchTypes.some((searchType, index) => {
+                        if (searchTypes[index]) {
+                            switch (index) {
+                                case 0: // Title
+                                    return book.title?.toLowerCase().includes(query.toLowerCase());
+                                case 1: // Author
+                                    return book.author?.toLowerCase().includes(query.toLowerCase());
+                                case 2: // Genre
+                                    return book.genre?.toLowerCase().includes(query.toLowerCase());
+                                default:
+                                    return false;
+                            }
+                        }
+                        return false;
+                    });
+                });
+            }
+            return books;
+        })
+    );
+}  
 
   getAllBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);

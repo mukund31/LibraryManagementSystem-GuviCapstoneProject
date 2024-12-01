@@ -29,11 +29,12 @@ public class BookController {
 
     @GetMapping("/search")
     public List<Book> searchBooks(@RequestParam String query) {
-        List<Book> booksByTitle = bookRepository.findByTitle(query);
+//        List<Book> booksByTitle = bookRepository.findByTitle(query);
+        List<Book> booksByTitle = bookRepository.findByTitleRegex(query);
 
-        List<Book> booksByAuthor = bookRepository.findByAuthor(query);
+        List<Book> booksByAuthor = bookRepository.findByAuthorRegex(query);
 
-        List<Book> booksByGenre = bookRepository.findByGenre(query);
+        List<Book> booksByGenre = bookRepository.findByGenreRegex(query);
 
         List<Book> newList = Stream.concat(booksByTitle.stream(), booksByAuthor.stream()).toList();
         newList=Stream.concat(newList.stream(), booksByGenre.stream()).toList();

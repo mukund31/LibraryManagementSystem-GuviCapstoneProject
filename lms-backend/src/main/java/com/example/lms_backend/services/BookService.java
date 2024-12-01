@@ -15,13 +15,13 @@ public class BookService {
 
     public List<Book> searchBooks(String title, String author, String genre) {
         if (title != null && !title.isEmpty()) {
-            return bookRepository.findByTitle(title);
+            return bookRepository.findByTitleRegex(".*" + title + ".*");
         }
         if (author != null && !author.isEmpty()) {
-            return bookRepository.findByAuthor(author);
+            return bookRepository.findByAuthorRegex(author);
         }
         if (genre != null && !genre.isEmpty()) {
-            return bookRepository.findByGenre(genre);
+            return bookRepository.findByGenreRegex(genre);
         }
         return bookRepository.findAll();
     }
