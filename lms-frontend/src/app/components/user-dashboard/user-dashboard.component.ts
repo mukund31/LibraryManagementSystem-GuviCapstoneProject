@@ -3,6 +3,8 @@ import { BorrowedBooksService } from '../../services/borrowed-books.service';
 import { Router } from '@angular/router';
 import { UserDashboardServiceService } from '../../services/user-dashboard-service.service';
 import { AuthService } from '../../services/auth.service';
+import { ReturnRocordsService } from '../../services/return-rocords.service';
+import { Return } from '../../models/return.model';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -14,9 +16,18 @@ export class UserDashboardComponent implements OnInit {
   totalBooksBorrowed: number = 0;
   overdueBooksCount: number = 0;
   loading: boolean = true;
+
+  returnRecord: Return = {
+    returnId: '',
+    borrowId: '',
+    returnDate: new Date(),
+    penaltyAmount: 0,
+    processedBy: '',
+  };
   
   constructor(private userDashBoardService: UserDashboardServiceService,
     private borrowedBookService: BorrowedBooksService,
+    private returnRecordService: ReturnRocordsService,
     private router: Router, 
     private authService: AuthService) {}
 
@@ -63,6 +74,14 @@ export class UserDashboardComponent implements OnInit {
   }
 
   returnBook(book: any): void {
+
+    this.returnRecord = {
+      borrowId: book.borrowId,
+      returnDate: new Date(),
+      penaltyAmount: this.calculatePenalty(book.dueDate),
+      processedBy: this.authService.getUserId() || 'Self',
+    };
+
     this.borrowedBookService.returnBook(book.borrowId).subscribe({
       next: (response) => {
         console.log(response);
@@ -71,6 +90,18 @@ export class UserDashboardComponent implements OnInit {
         console.error('Error returning book:', err);
       }
     });
+
+
+    this.returnRecordService.createReturn(this.returnRecord).subscribe(
+      (response) => {
+        console.log('Return saved:', response);
+        alert('Return successfully recorded.');
+      },
+      (error) => {
+        console.error('Error saving return:', error);
+        alert('Failed to save return.');
+      }
+    );
   }
   
 }
