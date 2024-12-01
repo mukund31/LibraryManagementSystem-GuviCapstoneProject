@@ -13,6 +13,7 @@ export class BookService {
   constructor(private http: HttpClient) {}
 
   addBook(book: Book): Observable<Book> {
+    console.log(book);
     return this.http.post<Book>(`${this.apiUrl}/add`, book);
   }
   

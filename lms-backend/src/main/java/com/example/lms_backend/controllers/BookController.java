@@ -57,6 +57,7 @@ public class BookController {
     @PostMapping("/add")
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
         Book savedBook = bookRepository.save(book);
+        System.out.println(savedBook);
         return ResponseEntity.ok(savedBook);
     }
 

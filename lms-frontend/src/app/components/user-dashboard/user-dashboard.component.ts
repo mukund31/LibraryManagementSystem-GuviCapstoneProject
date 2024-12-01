@@ -85,6 +85,7 @@ export class UserDashboardComponent implements OnInit {
     this.borrowedBookService.returnBook(book.borrowId).subscribe({
       next: (response) => {
         console.log(response);
+        this.borrowedBooks = this.borrowedBooks.filter(b => b.borrowId !== book.borrowId);
       },
       error: (err) => {
         console.error('Error returning book:', err);
