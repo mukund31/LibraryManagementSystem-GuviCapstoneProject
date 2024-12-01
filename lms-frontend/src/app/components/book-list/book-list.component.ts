@@ -47,9 +47,9 @@ export class BookListComponent implements OnInit {
     this.router.navigate(['/edit-book', book.bookId]);
   }
 
-  onDelete(bookId: string): void {
+  onDelete(book: Book): void {
     if (confirm('Are you sure you want to delete this book?')) {
-      this.bookService.deleteBook(bookId).subscribe(
+      this.bookService.deleteBook(book.bookId || "").subscribe(
         () => {
           this.fetchBooks();
         },

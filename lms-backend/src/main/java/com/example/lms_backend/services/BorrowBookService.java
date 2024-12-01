@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Service
-public class BorrowBook {
+public class BorrowBookService {
     @Autowired
     private BorrowedBooksRepository borrowedBookRepository;
 
@@ -41,5 +42,17 @@ public class BorrowBook {
 
     public long getTotalBorrowedBooks(String userId) {
         return borrowedBookRepository.countByUserId(userId);
+    }
+
+    public long getCheckedOutBooksCount() {
+        return borrowedBookRepository.countByStatus("borrowed");
+    }
+
+    public long getOverdueBooksCount() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate overdueDate = currentDate.minusDays(15);
+        Date overdueDateConverted = Date.from(overdueDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        return borrowedBookRepository.countByStatusAndBorrowDateBefore("borrowed", overdueDateConverted);
     }
 }

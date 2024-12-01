@@ -23,32 +23,10 @@ export class AddBookComponent {
 
   constructor(private bookService: BookService) {}
 
-  // onSubmit(): void {
-  //   console.log(this.book);
-  //   this.bookService.addBook(this.book).subscribe(
-  //     (response) => {
-  //       this.successMessage = 'Book added successfully!';
-  //       this.book = {
-  //         title: '',
-  //         author: '',
-  //         genre: '',
-  //         publicationYear: new Date().getFullYear(),
-  //         isbn: '',
-  //         copiesAvailable: 1,
-  //         location: ''
-  //       };
-  //     },
-  //     (error) => {
-  //       this.errorMessage = 'Error adding book.';
-  //       this.successMessage = null;
-  //       console.error('Error adding book:', error);
-  //     }
-  //   );
-  // }
   onSubmit(): void {
     this.bookService.addBook(this.book).subscribe(
       (response) => {
-        console.log('Response from server:', response); // Debugging line
+        console.log('Response from server:', response);
         this.successMessage = 'Book added successfully!';
         this.book = {
           title: '',
@@ -59,6 +37,9 @@ export class AddBookComponent {
           copiesAvailable: 1,
           location: ''
         };
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 2000);
       },
       (error) => {
         console.error('Error adding book:', error);

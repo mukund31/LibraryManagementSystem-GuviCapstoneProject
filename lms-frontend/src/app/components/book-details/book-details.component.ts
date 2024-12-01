@@ -32,30 +32,8 @@ export class BookDetailsComponent implements OnInit {
     }
   }
 
-  // borrowBook(): void {
-  //   if (this.book) {
-  //     const userId = this.authService.getUserId();
-  //     console.log("UserId: "+userId);
-  //     if (userId) {
-  //       this.borrowBookService.borrowBook(userId, this.book.bookId).subscribe(
-  //         (response) => {
-  //           this.borrowStatus = response;
-  //           this.book!.copiesAvailable--;
-  //         },
-  //         (error) => {
-  //           console.error(error);
-  //           this.borrowStatus = 'Failed to borrow the book. Please try again later.';
-  //         }
-  //       );
-  //     } else {
-  //       this.borrowStatus = 'User not authenticated.';
-  //     }
-  //   }
-  // }
-  
-
   borrowBook(): void {
-    if (this.book?.bookId) {  // Using optional chaining to ensure this.book and this.book.bookId are defined
+    if (this.book?.bookId) {
       const userId = this.authService.getUserId();
       console.log("UserId: " + userId);
   
@@ -64,7 +42,7 @@ export class BookDetailsComponent implements OnInit {
           (response) => {
             this.borrowStatus = response;
             if (this.book) {
-              this.book.copiesAvailable--;  // Ensure book is defined before updating
+              this.book.copiesAvailable--;
             }
           },
           (error) => {

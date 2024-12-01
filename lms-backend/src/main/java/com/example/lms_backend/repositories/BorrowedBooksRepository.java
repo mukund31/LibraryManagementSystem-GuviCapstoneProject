@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface BorrowedBooksRepository extends MongoRepository<BorrowedBooks, String> {
@@ -24,5 +25,7 @@ public interface BorrowedBooksRepository extends MongoRepository<BorrowedBooks, 
     })
     List<TopBookStats> findTopPerformingBooks();
 
+    long countByStatus(String status);
 
+    long countByStatusAndBorrowDateBefore(String borrowed, Date overdueDateConverted);
 }

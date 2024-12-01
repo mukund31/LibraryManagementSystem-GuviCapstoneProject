@@ -4,7 +4,7 @@ import com.example.lms_backend.models.Book;
 import com.example.lms_backend.models.BorrowedBooks;
 import com.example.lms_backend.repositories.BookRepository;
 import com.example.lms_backend.repositories.BorrowedBooksRepository;
-import com.example.lms_backend.services.BorrowBook;
+import com.example.lms_backend.services.BorrowBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +28,17 @@ public class BorrowedBooksController {
     private BookRepository bookRepository;
 
     @Autowired
-    private BorrowBook borrowBook;
+    private BorrowBookService borrowBookService;
+
+    @GetMapping("checked-out-books-count")
+    public long getCheckedOutBooksCount() {
+        return borrowBookService.getCheckedOutBooksCount();
+    }
+
+    @GetMapping("overdue-books-count")
+    public long getOverdueBooksCount() {
+        return borrowBookService.getOverdueBooksCount();
+    }
 
     @PostMapping("/borrow")
     public ResponseEntity<String> borrowBook(@RequestParam String userId, @RequestParam String bookId) {
@@ -99,7 +108,7 @@ public class BorrowedBooksController {
 
     @GetMapping("/{userId}/borrowing-history")
     public ResponseEntity<List<BorrowedBooks>> getBorrowingHistory(@PathVariable String userId) {
-        List<BorrowedBooks> books = borrowBook.getBorrowingHistory(userId);
+        List<BorrowedBooks> books = borrowBookService.getBorrowingHistory(userId);
         if (books.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -108,11 +117,11 @@ public class BorrowedBooksController {
 
     @GetMapping("/{userId}/total-borrowed-books")
     public long getTotalBorrowedBooks(@PathVariable String userId) {
-        return borrowBook.getTotalBorrowedBooks(userId);
+        return borrowBookService.getTotalBorrowedBooks(userId);
     }
 
     @GetMapping("/{userId}/total-penalties")
     public double getTotalPenaltiesPaid(@PathVariable String userId) {
-        return borrowBook.getTotalPenaltiesPaid(userId);
+        return borrowBookService.getTotalPenaltiesPaid(userId);
     }
 }

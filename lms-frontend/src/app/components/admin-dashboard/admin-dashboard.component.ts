@@ -4,6 +4,8 @@ import { Return } from '../../models/return.model';
 import { AuthService } from '../../services/auth.service';
 import { BorrowedBooksService } from '../../services/borrowed-books.service';
 import { ReturnRocordsService } from '../../services/return-rocords.service';
+import { BookService } from '../../services/book.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -14,6 +16,11 @@ export class AdminDashboardComponent implements OnInit {
   overdueBooks: any[] = [];
   topPerformingBooks: any[] = [];
 
+  totalBooks: number = 0;
+  totalUniqueBooks: number = 0;
+  totalUsers: number = 0;
+  totalCheckedOutBooks: number = 0;
+
   returnRecord: Return = {
     returnId: '',
     borrowId: '',
@@ -22,15 +29,42 @@ export class AdminDashboardComponent implements OnInit {
     processedBy: '',
   };
 
-  constructor(private dashboardService: AdminDashboardService,
+  constructor(
+    private dashboardService: AdminDashboardService,
     private authService: AuthService,
     private borrowedBookService: BorrowedBooksService,
-    private returnRecordService: ReturnRocordsService
+    private returnRecordService: ReturnRocordsService,
+    private bookService: BookService,
+    private borrowedBooksService: BorrowedBooksService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
     this.fetchOverdueBooks();
     this.fetchTopPerformingBooks();
+    this.fetchDashboardData();
+  }
+
+  fetchDashboardData(): void {
+    this.bookService.getTotalBooksCount().subscribe((data) => {
+      this.totalBooks = data;
+    });
+
+    this.bookService.getTotalUniqueBooksCount().subscribe((data) => {
+      this.totalUniqueBooks = data;
+    });
+
+    this.userService.getTotalUsers().subscribe((data) => {
+      this.totalUsers = data;
+    });
+
+    this.borrowedBooksService.getCheckedOutBooksCount().subscribe((data) => {
+      this.totalCheckedOutBooks = data;
+    });
+
+    this.borrowedBooksService.getOverdueBooksCount().subscribe((data) => {
+      this.overdueBooks = data;
+    });
   }
 
   fetchOverdueBooks(): void {

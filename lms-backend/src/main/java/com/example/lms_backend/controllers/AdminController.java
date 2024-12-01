@@ -35,6 +35,11 @@ public class AdminController {
         return "Admin dashboard";
     }
 
+    @GetMapping("user-count")
+    public long getTotalUsers() {
+        return userService.getTotalUsers();
+    }
+
     @GetMapping("/overdue-books")
     public List<BorrowedBooks> getOverdueBooks() {
 //        LocalDate today = LocalDate.now().plusDays(16); // 16 added to check working

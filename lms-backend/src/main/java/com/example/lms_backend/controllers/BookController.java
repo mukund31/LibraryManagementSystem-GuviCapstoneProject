@@ -21,9 +21,22 @@ public class BookController {
     @Autowired
     private final BookRepository bookRepository;
 
+    @Autowired
+    private final BookService bookService;
+
     @GetMapping
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
+    }
+
+    @GetMapping("/unique-count")
+    public  long getTotalUniqueBooksCount() {
+        return bookService.getTotalUniqueBooksCount();
+    }
+
+    @GetMapping("/count")
+    public  long getTotalBooksCount() {
+        return bookService.getTotalBooksCount();
     }
 
     @GetMapping("/search")

@@ -22,4 +22,8 @@ export class AdminDashboardService {
   getUserById(userId: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/users/${userId}`);
   }
+
+  getTotalUsers(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/user-count`);
+  }
 }

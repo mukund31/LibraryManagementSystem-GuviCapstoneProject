@@ -50,6 +50,16 @@ export class BookService {
     );
   }  
 
+  getTotalBooksCount(): Observable<any> {
+    let countB=this.http.get<number>(`${this.apiUrl}/count`);
+    console.log("count books: "+countB);
+    return countB;
+  }
+
+  getTotalUniqueBooksCount(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/unique-count`);
+  }
+
   getAllBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);
   }

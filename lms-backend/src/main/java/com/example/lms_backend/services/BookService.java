@@ -33,4 +33,20 @@ public class BookService {
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
+
+    public long getTotalUniqueBooksCount() {
+        return bookRepository.count();
+    }
+
+
+    public long getTotalBooksCount() {
+        int countAll=0;
+
+        List<Book> allBooks=getAllBooks();
+
+        for (Book book:allBooks) {
+            countAll+=book.getCopiesAvailable();
+        }
+        return countAll;
+    }
 }

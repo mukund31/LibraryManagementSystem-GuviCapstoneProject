@@ -31,4 +31,12 @@ export class BorrowedBooksService {
       responseType: 'text' as 'json'
     });
   }
+
+  getCheckedOutBooksCount(): Observable<any> {
+    return this.http.get<number>(`${this.apiUrl}/checked-out-books-count`);
+  }
+
+  getOverdueBooksCount(): Observable<any> {
+    return this.http.get<number>(`${this.apiUrl}/overdue-books-count`);
+  }
 }
