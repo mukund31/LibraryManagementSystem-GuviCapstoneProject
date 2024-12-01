@@ -1,36 +1,56 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../../services/book.service';
+import { AuthService } from '../../services/auth.service';
+import { BorrowedBooksService } from '../../services/borrowed-books.service';
 import { Book } from '../../models/book.model';
 
 @Component({
   selector: 'app-book-details',
   templateUrl: './book-details.component.html',
-  styleUrls: ['./book-details.component.scss'] // Corrected from styleUrl to styleUrls
+  styleUrls: ['./book-details.component.scss']
 })
 export class BookDetailsComponent implements OnInit {
-
   book: Book | undefined;
-  errorMessage: string | undefined;
+  borrowStatus: string | undefined;
 
   constructor(
     private route: ActivatedRoute,
-    private bookService: BookService
+    private bookService: BookService,
+    private borrowBookService: BorrowedBooksService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    const bookId = this.route.snapshot.paramMap.get('id'); // Retrieve 'id' from the route
+    this.authService.checkAuthentication(); // Redirects if not authenticated
+
+    const bookId = this.route.snapshot.paramMap.get('id');
     if (bookId) {
-      this.bookService.getBookById(bookId).subscribe(
-        (data) => {
-          this.book = data; // Set book data when successful
-        },
-        (error) => {
-          this.errorMessage = 'Book not found or an error occurred'; // Handle error
-          console.error('Error fetching book details:', error);
-        }
-      );
+      this.bookService.getBookById(bookId).subscribe((data) => {
+        this.book = data;
+      });
     }
   }
 
+  borrowBook(): void {
+    if (this.book) {
+      const userId = this.authService.getUserId();
+      console.log("UserId: "+userId);
+      if (userId) {
+        this.borrowBookService.borrowBook(userId, this.book.bookId).subscribe(
+          (response) => {
+            this.borrowStatus = response;
+            // this.borrowStatus = `Book borrowed successfully. Due date: ${response.dueDate}`;
+            this.book!.copiesAvailable--;
+          },
+          (error) => {
+            console.error(error);
+            this.borrowStatus = 'Failed to borrow the book. Please try again later.';
+          }
+        );
+      } else {
+        this.borrowStatus = 'User not authenticated.';
+      }
+    }
+  }
 }

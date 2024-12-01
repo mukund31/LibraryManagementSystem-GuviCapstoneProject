@@ -9,10 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class BorrowedBooksController {
 
     @Autowired
@@ -47,6 +49,8 @@ public class BorrowedBooksController {
         book.setCopiesAvailable(book.getCopiesAvailable() - 1);
         bookRepository.save(book);
 
+        String check="Book borrowed successfully. Due date: " + dueDate.toString();
+        System.out.println(check);
         return ResponseEntity.ok("Book borrowed successfully. Due date: " + dueDate.toString());
     }
 

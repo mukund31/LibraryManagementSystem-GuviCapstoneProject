@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLOutput;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +24,15 @@ public class AuthController {
     @Autowired
     private final JwtUtil jwtUtil;
 
+//    @GetMapping("/user")
+//    public ResponseEntity<?> getUserDetails(@RequestHeader("Authorization") String authHeader) {
+//        String token = authHeader.replace("Bearer ", "");
+//        Map<String, Object> claims = JwtUtil.decodeJwt(token);
+//        String userId = (String) claims.get("sub");  // Assumes 'sub' contains user ID.
+//
+//        return ResponseEntity.ok(userId);
+//    }
+
     @PostMapping("/register")
     public String register(@RequestBody User user) {
         return authService.registerUser(user);
@@ -34,7 +44,9 @@ public class AuthController {
             if (authService.validateUser(user.getUsername(), user.getPassword())) {
                 String token = jwtUtil.generateToken(user.getUsername());
                 String role = authService.getUserRole(user.getUsername());
-                return ResponseEntity.ok(new AuthResponse(token, role));
+//                Optional<User> fullUserOptional = authService.getUserByUsername(user.getUsername());
+                String userId = authService.getUserId(user.getUsername());
+                return ResponseEntity.ok(new AuthResponse(token, role, userId));
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         } catch (Exception e) {

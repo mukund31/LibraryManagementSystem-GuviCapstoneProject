@@ -54,4 +54,12 @@ public class AuthService {
         return userOpt.map(User::getRole).orElse("user");
     }
 
+    public String getUserId(String username) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        return userOpt.map(User::getId).orElse("");
+    }
+
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
