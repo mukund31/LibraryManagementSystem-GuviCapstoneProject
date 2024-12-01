@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -43,8 +44,9 @@ public class AdminController {
     @GetMapping("/overdue-books")
     public List<BorrowedBooks> getOverdueBooks() {
 //        LocalDate today = LocalDate.now().plusDays(16); // 16 added to check working
-        LocalDate today = LocalDate.now()   ;
+        LocalDate today = LocalDate.now();
         List<BorrowedBooks> overDueBooks = borrowedBooksRepository.findByDueDateBeforeAndStatus(today, "borrowed");
+        System.out.println(overDueBooks);
         for (BorrowedBooks borrowedBook : overDueBooks) {
             Book book = bookRepository.findById(borrowedBook.getBookId()).orElse(null);
             if (book != null) {
@@ -56,20 +58,25 @@ public class AdminController {
 
     @GetMapping("/top-performing-books")
     public List<TopBookStats> getTopPerformingBooks() {
-        List<TopBookStats> topBooks = borrowedBooksRepository.findTopPerformingBooks();
+        List<TopBookStats> resp = borrowedBooksRepository.findTopPerformingBooks();
 
-        for (TopBookStats stats : topBooks) {
+        List<TopBookStats> topBooks=new ArrayList<>();
+
+        for (TopBookStats stats : resp) {
             if (stats.getBookId() != null) {
                 Book book = bookRepository.findById(stats.getBookId()).orElse(null);
                 if (book != null) {
                     stats.setTitle(book.getTitle());
                     stats.setAuthor(book.getAuthor());
+                    topBooks.add(stats);
                 } else {
                     stats.setTitle("Unknown Book");
                 }
             } else {
                 stats.setTitle("Unknown Book");
             }
+            if(topBooks.size()==10)
+                break;
         }
 
         return topBooks;

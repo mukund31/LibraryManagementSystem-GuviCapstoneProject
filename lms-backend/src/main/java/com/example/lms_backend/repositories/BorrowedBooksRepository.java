@@ -20,7 +20,6 @@ public interface BorrowedBooksRepository extends MongoRepository<BorrowedBooks, 
     @Aggregation(pipeline = {
             "{ '$group': { '_id': '$bookId', 'count': { '$sum': 1 } } }",
             "{ '$sort': { 'count': -1 } }",
-            "{ '$limit': 10 }",
             "{ '$project': { 'bookId': '$_id', 'count': 1, '_id': 0 } }"  // Rename '_id' to 'bookId'
     })
     List<TopBookStats> findTopPerformingBooks();

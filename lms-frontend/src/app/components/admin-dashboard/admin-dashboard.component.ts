@@ -20,6 +20,7 @@ export class AdminDashboardComponent implements OnInit {
   totalUniqueBooks: number = 0;
   totalUsers: number = 0;
   totalCheckedOutBooks: number = 0;
+  overdueBooksCount: number = 0;
 
   returnRecord: Return = {
     returnId: '',
@@ -63,7 +64,7 @@ export class AdminDashboardComponent implements OnInit {
     });
 
     this.borrowedBooksService.getOverdueBooksCount().subscribe((data) => {
-      this.overdueBooks = data;
+      this.overdueBooksCount = data;
     });
   }
 
@@ -71,9 +72,7 @@ export class AdminDashboardComponent implements OnInit {
     this.dashboardService.getOverdueBooks().subscribe(
       (data) => {
         if (data.length > 0) {
-  
           data.forEach(book => {
-  
             this.dashboardService.getUserById(book.userId).subscribe(
               (userData) => {
                 book.username = userData.username;
@@ -83,7 +82,6 @@ export class AdminDashboardComponent implements OnInit {
               }
             );
           });
-  
           this.overdueBooks = data;
         } else {
           console.log('No overdue books found.');
@@ -125,7 +123,6 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   returnBook(book: any): void {
-
     this.returnRecord = {
       borrowId: book.borrowId,
       returnDate: new Date(),
