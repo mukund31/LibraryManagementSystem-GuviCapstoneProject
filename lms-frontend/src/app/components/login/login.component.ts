@@ -24,14 +24,13 @@ export class LoginComponent {
       (response: any) => {
         if (response.token) {
           this.authService.setToken(response.token);
-          // this.router.navigate(['/dashboard']);
           const userRole = response.role;
 
           console.log(response);
           if (userRole === 'admin') {
             this.router.navigate(['/admin-dashboard']);
           } else {
-            this.router.navigate(['/user-dashboard']);
+            this.router.navigate(['/books']);
           }
         }
       },

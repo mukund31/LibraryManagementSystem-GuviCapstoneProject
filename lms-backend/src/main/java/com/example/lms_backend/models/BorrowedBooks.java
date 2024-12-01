@@ -14,8 +14,11 @@ public class BorrowedBooks {
 
     private String userId;
     private String bookId;
+    private String title;
     private Date borrowDate;
     private Date dueDate;
+    private Date returnDate;
+    private double overdueFine;
     private String status;
 
     public BorrowedBooks(String userId, String bookId, Date borrowDate, Date dueDate, String status) {

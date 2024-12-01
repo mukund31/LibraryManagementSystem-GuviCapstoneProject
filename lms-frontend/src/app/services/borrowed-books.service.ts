@@ -23,8 +23,6 @@ export class BorrowedBooksService {
       responseType: 'text' as 'json'
     });
   }
-  
-  
 
   returnBook(borrowId: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/return`, borrowId);

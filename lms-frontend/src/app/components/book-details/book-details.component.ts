@@ -22,7 +22,7 @@ export class BookDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.checkAuthentication(); // Redirects if not authenticated
+    this.authService.checkAuthentication();
 
     const bookId = this.route.snapshot.paramMap.get('id');
     if (bookId) {

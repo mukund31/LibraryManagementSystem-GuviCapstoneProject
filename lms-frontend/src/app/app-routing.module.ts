@@ -11,8 +11,7 @@ import { BookDetailsComponent } from './components/book-details/book-details.com
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  // { path: 'user-dashboard', component: UserDashboardComponent},
-  { path: 'user-dashboard', redirectTo: '/books'},
+  { path: 'user-dashboard', component: UserDashboardComponent},
   { path: 'admin-dashboard', component: AdminDashboardComponent},
   { path: 'books', component: BookCatalogComponentComponent },
   { path: 'books/:id', component: BookDetailsComponent },

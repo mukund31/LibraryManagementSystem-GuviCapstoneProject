@@ -4,12 +4,17 @@ import com.example.lms_backend.models.Book;
 import com.example.lms_backend.models.BorrowedBooks;
 import com.example.lms_backend.repositories.BookRepository;
 import com.example.lms_backend.repositories.BorrowedBooksRepository;
+import com.example.lms_backend.services.BorrowBook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +27,9 @@ public class BorrowedBooksController {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private BorrowBook borrowBook;
 
     @PostMapping("/borrow")
     public ResponseEntity<String> borrowBook(@RequestParam String userId, @RequestParam String bookId) {
@@ -43,6 +51,7 @@ public class BorrowedBooksController {
                 "borrowed"
         );
 
+        borrowedBooks.setTitle(book.getTitle());
         borrowedBooksRepository.save(borrowedBooks);
 
         // Update book availability
@@ -59,17 +68,25 @@ public class BorrowedBooksController {
     public ResponseEntity<String> returnBook(@RequestBody Map<String, String> requestBody) {
         String borrowId = requestBody.get("borrowId");
 
-        // Find the borrowed book record
         BorrowedBooks borrowedBooks = borrowedBooksRepository.findById(borrowId).orElse(null);
         if (borrowedBooks == null || !borrowedBooks.getStatus().equals("borrowed")) {
             return ResponseEntity.status(404).body("Borrow record not found.");
         }
 
-        // Mark the book as returned
         borrowedBooks.setStatus("returned");
+        borrowedBooks.setReturnDate(new Date());
+
+
+        LocalDate borrowDate = borrowedBooks.getBorrowDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate returnDate = borrowedBooks.getReturnDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        int daysOverDue = (int)ChronoUnit.DAYS.between(borrowDate, returnDate);
+        borrowedBooks.setOverdueFine(daysOverDue);
         borrowedBooksRepository.save(borrowedBooks);
 
-        // Update book availability
         Book book = bookRepository.findById(borrowedBooks.getBookId()).orElse(null);
         if (book != null) {
             book.setCopiesAvailable(book.getCopiesAvailable() + 1);
@@ -77,5 +94,25 @@ public class BorrowedBooksController {
         }
 
         return ResponseEntity.ok("Book returned successfully.");
+    }
+
+
+    @GetMapping("/{userId}/borrowing-history")
+    public ResponseEntity<List<BorrowedBooks>> getBorrowingHistory(@PathVariable String userId) {
+        List<BorrowedBooks> books = borrowBook.getBorrowingHistory(userId);
+        if (books.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/{userId}/total-borrowed-books")
+    public long getTotalBorrowedBooks(@PathVariable String userId) {
+        return borrowBook.getTotalBorrowedBooks(userId);
+    }
+
+    @GetMapping("/{userId}/total-penalties")
+    public double getTotalPenaltiesPaid(@PathVariable String userId) {
+        return borrowBook.getTotalPenaltiesPaid(userId);
     }
 }
