@@ -15,7 +15,10 @@ export class UserDashboardComponent implements OnInit {
   overdueBooksCount: number = 0;
   loading: boolean = true;
   
-  constructor(private userDashBoardService: UserDashboardServiceService, private router: Router, private authService: AuthService) {}
+  constructor(private userDashBoardService: UserDashboardServiceService,
+    private borrowedBookService: BorrowedBooksService,
+    private router: Router, 
+    private authService: AuthService) {}
 
   ngOnInit(): void {
     this.fetchBorrowingHistory();
@@ -58,4 +61,16 @@ export class UserDashboardComponent implements OnInit {
     const penaltyPerDay = 1;
     return daysOverdue * penaltyPerDay;
   }
+
+  returnBook(book: any): void {
+    this.borrowedBookService.returnBook(book.borrowId).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (err) => {
+        console.error('Error returning book:', err);
+      }
+    });
+  }
+  
 }

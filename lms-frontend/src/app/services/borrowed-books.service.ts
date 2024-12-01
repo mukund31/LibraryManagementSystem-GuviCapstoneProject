@@ -25,6 +25,10 @@ export class BorrowedBooksService {
   }
 
   returnBook(borrowId: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/return`, borrowId);
+    const body = { borrowId };
+    return this.http.post(`${this.apiUrl}/return`, body, {
+      headers: { 'Content-Type': 'application/json' },
+      responseType: 'text' as 'json'
+    });
   }
 }
