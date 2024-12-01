@@ -11,6 +11,8 @@ import { BookCatalogComponentComponent } from './components/book-catalog-compone
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { AdminDashboardService } from './services/admin-dashboard.service';
 import { AddBookComponent } from './components/add-book/add-book.component';
+import { BookListComponent } from './components/book-list/book-list.component';
+import { AdminEditBookComponent } from './components/admin-edit-book/admin-edit-book.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { AddBookComponent } from './components/add-book/add-book.component';
     BookCatalogComponentComponent,
     BookDetailsComponent,
     AddBookComponent,
+    BookListComponent,
+    AdminEditBookComponent,
   ],
   imports: [
     BrowserModule,

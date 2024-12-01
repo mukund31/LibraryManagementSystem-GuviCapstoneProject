@@ -7,6 +7,8 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { BookCatalogComponentComponent } from './components/book-catalog-component/book-catalog-component.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { AddBookComponent } from './components/add-book/add-book.component';
+import { BookListComponent } from './components/book-list/book-list.component';
+import { AdminEditBookComponent } from './components/admin-edit-book/admin-edit-book.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'books', component: BookCatalogComponentComponent },
   { path: 'books/:id', component: BookDetailsComponent },
   { path: 'admin/add-book', component: AddBookComponent },
+  { path: 'books-list', component: BookListComponent },
+  { path: 'edit-book/:id', component: AdminEditBookComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 

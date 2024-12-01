@@ -1,0 +1,56 @@
+<div class="min-h-screen flex justify-center bg-gray-100">
+  <div class="book-list-container bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl">
+    <div class="mb-4 flex justify-between items-center">
+      <h2 class="text-2xl font-semibold">Books List</h2>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Search by Title, Author, or Genre"
+        (input)="onSearch()"
+        class="px-4 py-2 border rounded-md"
+      />
+    </div>
+
+    <div *ngIf="books.length === 0" class="text-center text-gray-500">
+      No books available.
+    </div>
+
+    <table *ngIf="books.length > 0" class="min-w-full table-auto">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 border-b text-left">Title</th>
+          <th class="px-4 py-2 border-b text-left">Author</th>
+          <th class="px-4 py-2 border-b text-left">Genre</th>
+          <th class="px-4 py-2 border-b text-left">Year</th>
+          <th class="px-4 py-2 border-b text-left">Availability</th>
+          <th class="px-4 py-2 border-b text-left">Location</th>
+          <th class="px-4 py-2 border-b text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td class="px-4 py-2 border-b">{{ book.title }}</td>
+          <td class="px-4 py-2 border-b">{{ book.author }}</td>
+          <td class="px-4 py-2 border-b">{{ book.genre }}</td>
+          <td class="px-4 py-2 border-b">{{ book.publicationYear }}</td>
+          <td class="px-4 py-2 border-b">{{ book.copiesAvailable }}</td>
+          <td class="px-4 py-2 border-b">{{ book.location }}</td>
+          <td class="px-4 py-2 border-b">
+            <button
+              (click)="onEdit(book)"
+              class="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2"
+            >
+              Edit
+            </button>
+            <button
+              (click)="onDelete(book.bookId)"
+              class="bg-red-500 text-white px-4 py-2 rounded-md"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
