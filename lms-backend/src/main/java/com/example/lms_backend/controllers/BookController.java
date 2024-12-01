@@ -29,7 +29,6 @@ public class BookController {
 
     @GetMapping("/search")
     public List<Book> searchBooks(@RequestParam String query) {
-//        List<Book> booksByTitle = bookRepository.findByTitle(query);
         List<Book> booksByTitle = bookRepository.findByTitleRegex(query);
 
         List<Book> booksByAuthor = bookRepository.findByAuthorRegex(query);

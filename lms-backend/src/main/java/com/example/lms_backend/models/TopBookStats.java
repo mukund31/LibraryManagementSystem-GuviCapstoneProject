@@ -8,4 +8,5 @@ public class TopBookStats {
     private String bookId;
     private long count;
     private String title;
+    private String author;
 }

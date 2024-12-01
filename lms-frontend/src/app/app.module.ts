@@ -9,6 +9,7 @@ import { UserDashboardComponent } from './components/user-dashboard/user-dashboa
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { BookCatalogComponentComponent } from './components/book-catalog-component/book-catalog-component.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
+import { AdminDashboardService } from './services/admin-dashboard.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { BookDetailsComponent } from './components/book-details/book-details.com
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [AdminDashboardService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

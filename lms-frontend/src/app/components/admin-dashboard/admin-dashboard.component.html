@@ -1,1 +1,49 @@
-<p>admin-dashboard works!</p>
+<div class="admin-dashboard max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Admin Dashboard</h2>
+  
+    <div class="section mb-8">
+      <h3 class="text-2xl font-medium mb-4 text-gray-800">Overdue Books</h3>
+      <div *ngIf="overdueBooks.length === 0" class="text-gray-500">No overdue books found.</div>
+      <table *ngIf="overdueBooks.length > 0" class="min-w-full bg-white border border-gray-300 rounded-lg shadow-sm">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="py-2 px-4 text-left text-gray-700 font-semibold">Title</th>
+            <th class="py-2 px-4 text-left text-gray-700 font-semibold">Borrowed Date</th>
+            <th class="py-2 px-4 text-left text-gray-700 font-semibold">Due Date</th>
+            <th class="py-2 px-4 text-left text-gray-700 font-semibold">Overdue Fine</th>
+            <th class="py-2 px-4 text-left text-gray-700 font-semibold">User</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of overdueBooks" class="border-b">
+            <td class="py-2 px-4 text-gray-700">{{ book.title }}</td>
+            <td class="py-2 px-4 text-gray-500">{{ book.borrowDate | date:'shortDate' }}</td>
+            <td class="py-2 px-4 text-gray-500">{{ book.dueDate | date:'shortDate' }}</td>
+            <td class="py-2 px-4 text-gray-500">{{ book.overdueFine }}</td>
+            <td class="py-2 px-4 text-gray-500">{{ book.username }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="section">
+      <h3 class="text-2xl font-medium mb-4 text-gray-800">Top Performing Books</h3>
+      <div *ngIf="topPerformingBooks.length === 0" class="text-gray-500">No top-performing books found.</div>
+      <table *ngIf="topPerformingBooks.length > 0" class="min-w-full bg-white border border-gray-300 rounded-lg shadow-sm">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="py-2 px-4 text-left text-gray-700 font-semibold">Title</th>
+            <th class="py-2 px-4 text-left text-gray-700 font-semibold">Author</th>
+            <th class="py-2 px-4 text-left text-gray-700 font-semibold">Times Borrowed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of topPerformingBooks" class="border-b">
+            <td class="py-2 px-4 text-gray-700">{{ book.title }}</td>
+            <td class="py-2 px-4 text-gray-700">{{ book.author }}</td>
+            <td class="py-2 px-4 text-gray-500">{{ book.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
