@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 @RestController
@@ -35,8 +34,13 @@ public class BookController {
 
         List<Book> booksByGenre = bookRepository.findByGenreRegex(query);
 
-        List<Book> newList = Stream.concat(booksByTitle.stream(), booksByAuthor.stream()).toList();
-        newList=Stream.concat(newList.stream(), booksByGenre.stream()).toList();
+        Set<Book> uniqueBooks = new HashSet<>();
+        uniqueBooks.addAll(booksByTitle);
+        uniqueBooks.addAll(booksByAuthor);
+        uniqueBooks.addAll(booksByGenre);
+
+        List<Book> newList = new ArrayList<>(uniqueBooks);
+
         return newList;
     }
 
