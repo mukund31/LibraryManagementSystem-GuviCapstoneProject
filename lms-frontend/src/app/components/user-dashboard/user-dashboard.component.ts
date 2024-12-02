@@ -41,7 +41,8 @@ export class UserDashboardComponent implements OnInit {
     if (userId) {
       this.userDashBoardService.getBorrowingHistory(userId).subscribe({
         next: (response) => {
-          this.borrowedBooks = response;
+          console.log(response);
+          this.borrowedBooks = response || [];
           this.totalBooksBorrowed = this.borrowedBooks.length;
           this.overdueBooksCount = this.borrowedBooks.filter(book => this.getDaysOverdue(book.dueDate) > 0).length;
           this.loading = false;

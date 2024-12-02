@@ -2,13 +2,13 @@ package com.example.lms_backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -32,14 +32,46 @@ public class SecurityConfig implements WebMvcConfigurer {
 //                .allowCredentials(true);
 //    }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.csrf().disable()
+//                .cors().and()
+//                .authorizeHttpRequests()
+//                .requestMatchers("/auth/login", "/auth/register").permitAll()
+//                .requestMatchers("/api/books/**").hasRole("User")
+//                .anyRequest().authenticated()
+//                .and()
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .cors().and()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/login", "/auth/register").permitAll()
-                .requestMatchers("/api/books/**").hasRole("User")
                 .requestMatchers("/admin/admin-dashboard").hasRole("Admin")
+                .requestMatchers("/admin/user-count").hasRole("Admin")
+                .requestMatchers("/admin/overdue-books").hasRole("Admin")
+                .requestMatchers("/admin/top-performing-books").hasRole("Admin")
+                .requestMatchers("/admin/users/**").hasRole("Admin")
+                .requestMatchers("/api/books/unique-count").hasRole("Admin")
+                .requestMatchers("/api/books/count").hasRole("Admin")
+                .requestMatchers("/api/books/add").hasRole("Admin")
+                .requestMatchers("/api/books/update/**").hasRole("Admin")
+                .requestMatchers("/api/books/delete/**").hasRole("Admin")
+                .requestMatchers("/api/checked-out-books-count").hasRole("Admin")
+                .requestMatchers("/api/overdue-books-count").hasRole("Admin")
+                .requestMatchers("/api/borrow").hasRole("User") // user
+                .requestMatchers("/api/books").hasAnyRole("Admin", "User")
+                .requestMatchers("/api/books/search").hasAnyRole("Admin", "User")
+                .requestMatchers("/api/books/**").hasAnyRole("Admin", "User")  
+                .requestMatchers("/api/return").hasAnyRole("Admin", "User")
+                .requestMatchers("/api/*/borrowing-history", "/api/{userId}/borrowing-history").hasAnyRole("Admin", "User")
+                .requestMatchers("/api/*/total-borrowed-books").hasAnyRole("Admin", "User")
+                .requestMatchers("/api/*/total-penalties").hasAnyRole("Admin", "User")
+
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

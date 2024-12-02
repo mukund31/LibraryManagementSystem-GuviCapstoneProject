@@ -19,23 +19,41 @@ export class BorrowedBooksService {
     });
   }
 
+  private getBorrowHeaders(): HttpHeaders {
+    const token = localStorage.getItem('jwt_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+  }
+
   borrowBook(userId: string, bookId: string): Observable<any> {
     const params = new URLSearchParams();
     params.set('userId', userId);
     params.set('bookId', bookId);
   
     return this.http.post(`${this.apiUrl}/borrow`, params.toString(), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
+      headers: this.getBorrowHeaders(),
       responseType: 'text' as 'json'
     });
   }
+  // borrowBook(userId: string, bookId: string): Observable<any> {
+  //   const params = new URLSearchParams();
+  //   params.set('userId', userId);
+  //   params.set('bookId', bookId);
+  
+  //   return this.http.post(`${this.apiUrl}/borrow`, params.toString(), {
+  //     headers: {
+  //       'Content-Type': 'application/x-www-form-urlencoded'
+  //     },
+  //     responseType: 'text' as 'json'
+  //   });
+  // }
 
   returnBook(borrowId: string): Observable<any> {
     const body = { borrowId };
     return this.http.post(`${this.apiUrl}/return`, body, {
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders(),
       responseType: 'text' as 'json'
     });
   }
