@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,31 +29,18 @@ public class BookController {
     }
 
     @GetMapping("/unique-count")
-    public  long getTotalUniqueBooksCount() {
+    public long getTotalUniqueBooksCount() {
         return bookService.getTotalUniqueBooksCount();
     }
 
     @GetMapping("/count")
-    public  long getTotalBooksCount() {
+    public long getTotalBooksCount() {
         return bookService.getTotalBooksCount();
     }
 
     @GetMapping("/search")
     public List<Book> searchBooks(@RequestParam String query) {
-        List<Book> booksByTitle = bookRepository.findByTitleRegex(query);
-
-        List<Book> booksByAuthor = bookRepository.findByAuthorRegex(query);
-
-        List<Book> booksByGenre = bookRepository.findByGenreRegex(query);
-
-        Set<Book> uniqueBooks = new HashSet<>();
-        uniqueBooks.addAll(booksByTitle);
-        uniqueBooks.addAll(booksByAuthor);
-        uniqueBooks.addAll(booksByGenre);
-
-        List<Book> newList = new ArrayList<>(uniqueBooks);
-
-        return newList;
+        return bookService.searchBooks(query);
     }
 
     @GetMapping("/{id}")
@@ -69,8 +55,11 @@ public class BookController {
 
     @PostMapping("/add")
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
+        book.setTitle(book.getTitle().toLowerCase());
+        book.setGenre(book.getGenre().toLowerCase());
+        book.setAuthor(book.getAuthor().toLowerCase());
         Book savedBook = bookRepository.save(book);
-        System.out.println(savedBook);
+//        System.out.println(savedBook);
         return ResponseEntity.ok(savedBook);
     }
 

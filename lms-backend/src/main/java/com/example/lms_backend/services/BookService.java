@@ -1,33 +1,47 @@
 package com.example.lms_backend.services;
 
 import com.example.lms_backend.models.Book;
+import com.example.lms_backend.models.SearchLogs;
 import com.example.lms_backend.repositories.BookRepository;
+import com.example.lms_backend.repositories.SearchLogsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final SearchLogsRepository searchLogsRepository;
+    private final AuthService authService;
 
-    public List<Book> searchBooks(String title, String author, String genre) {
-        if (title != null && !title.isEmpty()) {
-            return bookRepository.findByTitleRegex(".*" + title + ".*");
-        }
-        if (author != null && !author.isEmpty()) {
-            return bookRepository.findByAuthorRegex(author);
-        }
-        if (genre != null && !genre.isEmpty()) {
-            return bookRepository.findByGenreRegex(genre);
-        }
-        return bookRepository.findAll();
-    }
+    public List<Book> searchBooks(String query) {
+        query=query.toLowerCase();
+        List<Book> booksByTitle = bookRepository.findByTitleRegex(query);
 
-    public Book addBook(Book book) {
-        return bookRepository.save(book);
+        List<Book> booksByAuthor = bookRepository.findByAuthorRegex(query);
+
+        List<Book> booksByGenre = bookRepository.findByGenreRegex(query);
+
+        Set<Book> uniqueBooks = new HashSet<>();
+        uniqueBooks.addAll(booksByTitle);
+        uniqueBooks.addAll(booksByAuthor);
+        uniqueBooks.addAll(booksByGenre);
+
+        List<Book> searchResult = new ArrayList<>(uniqueBooks);
+
+        SearchLogs searchLog = new SearchLogs();
+        searchLog.setUserId(authService.getUserId());
+//        System.out.println("User id: "+searchLog.getUserId());
+        searchLog.setSearchQuery(query);
+        searchLog.setDate(new Date());
+        searchLog.setResultCount(searchResult.size());
+
+        searchLogsRepository.save(searchLog);
+
+        return searchResult;
     }
 
     public List<Book> getAllBooks() {

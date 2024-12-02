@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Book } from '../models/book.model';
@@ -14,7 +14,16 @@ export class BookService {
 
   addBook(book: Book): Observable<Book> {
     console.log(book);
-    return this.http.post<Book>(`${this.apiUrl}/add`, book);
+    return this.http.post<Book>(`${this.apiUrl}/add`, book, {
+      headers: this.getHeaders()});
+  }
+
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('jwt_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
   }
   
   searchBooks(query?: string, searchTypes: boolean[] = [true, true, true]): Observable<Book[]> {
@@ -24,7 +33,7 @@ export class BookService {
         params = params.set('query', query);
     }
 
-    return this.http.get<Book[]>(`${this.apiUrl}/search`, { params }).pipe(
+    return this.http.get<Book[]>(`${this.apiUrl}/search`, { params, headers: this.getHeaders() }).pipe(
         map((books: Book[]) => {
             if (searchTypes.length > 0 && query) {
                 return books.filter(book => {
@@ -51,27 +60,33 @@ export class BookService {
   }  
 
   getTotalBooksCount(): Observable<any> {
-    return this.http.get<number>(`${this.apiUrl}/count`);
+    return this.http.get<number>(`${this.apiUrl}/count`, {
+      headers: this.getHeaders()});
   }
 
   getTotalUniqueBooksCount(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/unique-count`);
+    return this.http.get<any>(`${this.apiUrl}/unique-count`, {
+      headers: this.getHeaders()});
   }
 
   getAllBooks(): Observable<Book[]> {
-    return this.http.get<Book[]>(this.apiUrl);
+    return this.http.get<Book[]>(this.apiUrl, {
+      headers: this.getHeaders()});
   }
 
   getBookById(bookId: string): Observable<Book> {
-    return this.http.get<Book>(`${this.apiUrl}/${bookId}`);
+    return this.http.get<Book>(`${this.apiUrl}/${bookId}`, {
+      headers: this.getHeaders()});
   }
 
   updateBook(bookId: string, book: Book): Observable<Book> {
-    return this.http.put<Book>(`${this.apiUrl}/update/${bookId}`, book);
+    return this.http.put<Book>(`${this.apiUrl}/update/${bookId}`, book, {
+      headers: this.getHeaders()});
   }
 
   deleteBook(bookId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/delete/${bookId}`);
+    return this.http.delete<void>(`${this.apiUrl}/delete/${bookId}`, {
+      headers: this.getHeaders()});
   }
   
 }

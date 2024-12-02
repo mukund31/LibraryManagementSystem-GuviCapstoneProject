@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -10,6 +10,14 @@ export class BorrowedBooksService {
   private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
+
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('jwt_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  }
 
   borrowBook(userId: string, bookId: string): Observable<any> {
     const params = new URLSearchParams();
@@ -33,10 +41,12 @@ export class BorrowedBooksService {
   }
 
   getCheckedOutBooksCount(): Observable<any> {
-    return this.http.get<number>(`${this.apiUrl}/checked-out-books-count`);
+    return this.http.get<number>(`${this.apiUrl}/checked-out-books-count`, {
+      headers: this.getHeaders()});
   }
 
   getOverdueBooksCount(): Observable<any> {
-    return this.http.get<number>(`${this.apiUrl}/overdue-books-count`);
+    return this.http.get<number>(`${this.apiUrl}/overdue-books-count`, {
+      headers: this.getHeaders()});
   }
 }

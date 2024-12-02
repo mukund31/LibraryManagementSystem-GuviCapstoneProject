@@ -9,7 +9,6 @@ import com.example.lms_backend.repositories.BorrowedBooksRepository;
 import com.example.lms_backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,7 +17,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-@PreAuthorize("hasRole('ADMIN')")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
 
@@ -36,7 +34,7 @@ public class AdminController {
         return "Admin dashboard";
     }
 
-    @GetMapping("user-count")
+    @GetMapping("/user-count")
     public long getTotalUsers() {
         return userService.getTotalUsers();
     }
@@ -46,7 +44,7 @@ public class AdminController {
 //        LocalDate today = LocalDate.now().plusDays(16); // 16 added to check working
         LocalDate today = LocalDate.now();
         List<BorrowedBooks> overDueBooks = borrowedBooksRepository.findByDueDateBeforeAndStatus(today, "borrowed");
-        System.out.println(overDueBooks);
+//        System.out.println(overDueBooks);
         for (BorrowedBooks borrowedBook : overDueBooks) {
             Book book = bookRepository.findById(borrowedBook.getBookId()).orElse(null);
             if (book != null) {

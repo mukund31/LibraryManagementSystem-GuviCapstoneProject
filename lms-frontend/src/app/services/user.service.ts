@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,16 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('jwt_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+
   getTotalUsers(): Observable<any> {
-    return this.http.get<number>(`${this.apiUrl}/user-count`);
+    return this.http.get<number>(`${this.apiUrl}/user-count`, {
+      headers: this.getHeaders()});
   }
 }

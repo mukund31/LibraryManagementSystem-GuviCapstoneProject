@@ -30,12 +30,12 @@ public class BorrowedBooksController {
     @Autowired
     private BorrowBookService borrowBookService;
 
-    @GetMapping("checked-out-books-count")
+    @GetMapping("/checked-out-books-count")
     public long getCheckedOutBooksCount() {
         return borrowBookService.getCheckedOutBooksCount();
     }
 
-    @GetMapping("overdue-books-count")
+    @GetMapping("/overdue-books-count")
     public long getOverdueBooksCount() {
         return borrowBookService.getOverdueBooksCount();
     }
@@ -68,7 +68,7 @@ public class BorrowedBooksController {
         bookRepository.save(book);
 
         String check="Book borrowed successfully. Due date: " + dueDate.toString();
-        System.out.println(check);
+//        System.out.println(check);
         return ResponseEntity.ok("Book borrowed successfully. Due date: " + dueDate.toString());
     }
 
