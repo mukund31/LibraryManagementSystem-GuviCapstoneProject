@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-book-catalog-component',
@@ -9,11 +10,13 @@ import { BookService } from '../../services/book.service';
 })
 export class BookCatalogComponentComponent {
   books: Book[] = [];
-  query: string = '';
+  searchQuery: string = '';
   searchTypes: boolean[] = [true, true, true]; // title, author, genere
   noResultsFound: boolean = false;
 
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.getAllBooks();
@@ -27,10 +30,10 @@ export class BookCatalogComponentComponent {
   }
 
   searchBooks(): void {
-    if (this.query.trim() === '') {
+    if (this.searchQuery.trim() === '') {
       this.getAllBooks();
     } else {
-      this.bookService.searchBooks(this.query, this.searchTypes).subscribe((data) => {
+      this.bookService.searchBooks(this.searchQuery, this.authService.getUserId() || "", this.searchTypes).subscribe((data) => {
         this.books = data;
         this.noResultsFound = this.books.length === 0;
       });

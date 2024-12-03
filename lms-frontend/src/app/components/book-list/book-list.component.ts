@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-book-list',
@@ -14,7 +15,8 @@ export class BookListComponent implements OnInit {
   searchQuery: string = '';
 
   constructor(private bookService: BookService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +35,7 @@ export class BookListComponent implements OnInit {
   }
 
   onSearch(): void {
-    this.bookService.searchBooks(this.searchQuery).subscribe(
+    this.bookService.searchBooks(this.searchQuery, this.authService.getUserId() || "").subscribe(
       (books: Book[]) => {
         this.books = books;
       },

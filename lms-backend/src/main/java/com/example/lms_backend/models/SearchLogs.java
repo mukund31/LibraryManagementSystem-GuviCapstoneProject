@@ -13,6 +13,9 @@ public class SearchLogs {
     private String searchId;
     private String userId;
     private String searchQuery;
+    private boolean inTitle;
+    private boolean inAuthor;
+    private boolean inGenre;
     private Date date;
     private long resultCount;
 }

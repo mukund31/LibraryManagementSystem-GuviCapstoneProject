@@ -26,38 +26,43 @@ export class BookService {
     });
   }
   
-  searchBooks(query?: string, searchTypes: boolean[] = [true, true, true]): Observable<Book[]> {
-    let params = new HttpParams();
+  searchBooks(query: string, userId: string, searchTypes: boolean[] = [true, true, true]): Observable<Book[]> {
+    const requestBody = {
+      searchQuery: query,
+      userId: userId,
+      inTitle: searchTypes[0],
+      inAuthor: searchTypes[1],
+      inGenre: searchTypes[2],
+    };
+  
+    return this.http.post<Book[]>(`${this.apiUrl}/search`, requestBody, {
+      headers: this.getHeaders()
+    }).pipe(
+      map((books: Book[]) => {
+        if (searchTypes.length > 0 && query) {
+          return books.filter(book => {
+            return searchTypes.some((searchType, index) => {
+              if (searchTypes[index]) {
+                switch (index) {
+                  case 0: // Title
+                    return book.title?.toLowerCase().includes(query.toLowerCase());
+                  case 1: // Author
+                    return book.author?.toLowerCase().includes(query.toLowerCase());
+                  case 2: // Genre
+                    return book.genre?.toLowerCase().includes(query.toLowerCase());
+                  default:
+                    return false;
+                }
+              }
+              return false;
+            });
+          });
+        }
 
-    if (query) {
-        params = params.set('query', query);
-    }
-
-    return this.http.get<Book[]>(`${this.apiUrl}/search`, { params, headers: this.getHeaders() }).pipe(
-        map((books: Book[]) => {
-            if (searchTypes.length > 0 && query) {
-                return books.filter(book => {
-                    return searchTypes.some((searchType, index) => {
-                        if (searchTypes[index]) {
-                            switch (index) {
-                                case 0: // Title
-                                    return book.title?.toLowerCase().includes(query.toLowerCase());
-                                case 1: // Author
-                                    return book.author?.toLowerCase().includes(query.toLowerCase());
-                                case 2: // Genre
-                                    return book.genre?.toLowerCase().includes(query.toLowerCase());
-                                default:
-                                    return false;
-                            }
-                        }
-                        return false;
-                    });
-                });
-            }
-            return books;
-        })
+        return books;
+      })
     );
-  }  
+  }
 
   getTotalBooksCount(): Observable<any> {
     return this.http.get<number>(`${this.apiUrl}/count`, {

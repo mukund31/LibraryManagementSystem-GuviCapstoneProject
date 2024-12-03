@@ -2,6 +2,7 @@ package com.example.lms_backend.controllers;
 
 
 import com.example.lms_backend.models.Book;
+import com.example.lms_backend.models.SearchLogs;
 import com.example.lms_backend.repositories.BookRepository;
 import com.example.lms_backend.services.BookService;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +39,15 @@ public class BookController {
         return bookService.getTotalBooksCount();
     }
 
-    @GetMapping("/search")
-    public List<Book> searchBooks(@RequestParam String query) {
-        return bookService.searchBooks(query);
+//    @GetMapping("/search")
+//    public List<Book> searchBooks(@RequestParam String query) {
+//        return bookService.searchBooks(query);
+//    }
+
+    @PostMapping("/search")
+    public List<Book> searchBooks(@RequestBody SearchLogs searchLogs) {
+        System.out.println(searchLogs);
+        return bookService.searchBooks(searchLogs);
     }
 
     @GetMapping("/{id}")
