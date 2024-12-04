@@ -76,21 +76,32 @@
               />
             </div>
         </div>
-    
+        
         <div>
           <label for="location" class="block font-medium">Location</label>
           <input
-            type="text"
+          type="text"
             id="location"
             name="location"
             [(ngModel)]="book.location"
             required
             class="w-full px-4 py-2 border rounded-md"
+            />
+        </div>
+        
+        <div>
+          <label for="bookCoverImage" class="block font-medium">Book Cover Image</label>
+          <input
+            type="file"
+            id="bookCoverImage"
+            name="bookCoverImage"
+            (change)="onFileChange($event)"
+            class="w-full px-4 py-2 border rounded-md"
           />
         </div>
-    
+        
         <button
-          type="submit"
+        type="submit"
           [disabled]="!bookForm.valid"
           class="w-full bg-blue-500 text-white py-2 rounded-md"
         >

@@ -23,10 +23,21 @@ export class AddBookComponent {
 
   constructor(private bookService: BookService) {}
 
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.book.coverImageBase64 = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
   onSubmit(): void {
     this.bookService.addBook(this.book).subscribe(
       (response) => {
-        console.log('Response from server:', response);
+        // console.log('Response from server:', response);
         this.successMessage = 'Book added successfully!';
         this.book = {
           title: '',
@@ -35,7 +46,8 @@ export class AddBookComponent {
           publicationYear: new Date().getFullYear(),
           isbn: '',
           copiesAvailable: 1,
-          location: ''
+          location: '',
+          coverImageBase64: ''
         };
         setTimeout(() => {
           this.successMessage = null;
@@ -48,5 +60,4 @@ export class AddBookComponent {
       }
     );
   }
-  
 }

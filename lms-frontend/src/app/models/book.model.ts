@@ -7,5 +7,8 @@ export interface Book {
     isbn: string;
     copiesAvailable: number;
     location: string;
+
+    // coverImage?: File;
+    coverImageBase64?: string; 
 }
   

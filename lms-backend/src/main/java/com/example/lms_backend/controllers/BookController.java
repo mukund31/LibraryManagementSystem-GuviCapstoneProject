@@ -5,11 +5,15 @@ import com.example.lms_backend.models.Book;
 import com.example.lms_backend.models.SearchLogs;
 import com.example.lms_backend.repositories.BookRepository;
 import com.example.lms_backend.services.BookService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -61,13 +65,21 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Book> addBook(@RequestBody Book book) {
-        book.setTitle(book.getTitle().toLowerCase());
-        book.setGenre(book.getGenre().toLowerCase());
-        book.setAuthor(book.getAuthor().toLowerCase());
-        Book savedBook = bookRepository.save(book);
-//        System.out.println(savedBook);
-        return ResponseEntity.ok(savedBook);
+    public ResponseEntity<?> addBook(@RequestBody Book book) {
+        try {
+//            if (book.getCoverImageBase64() != null) {
+//                byte[] imageData = Base64.getDecoder().decode(
+//                        book.getCoverImageBase64().split(",")[1]);
+//                book.setImageData(imageData);
+//            }
+
+            bookRepository.save(book);
+
+            return ResponseEntity.ok(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
+        }
     }
 
     @PutMapping("/update/{id}")

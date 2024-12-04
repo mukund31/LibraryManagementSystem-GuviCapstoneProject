@@ -17,4 +17,7 @@ public class Book {
     private String isbn;
     private int copiesAvailable;
     private String location;
+
+//    private byte[] imageData;
+    private String coverImageBase64;
 }
