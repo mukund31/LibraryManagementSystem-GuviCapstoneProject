@@ -50,7 +50,7 @@ public class BookController {
 
     @PostMapping("/search")
     public List<Book> searchBooks(@RequestBody SearchLogs searchLogs) {
-        System.out.println(searchLogs);
+//        System.out.println(searchLogs);
         return bookService.searchBooks(searchLogs);
     }
 

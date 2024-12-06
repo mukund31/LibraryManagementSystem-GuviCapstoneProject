@@ -12,7 +12,7 @@ public class NotificationService {
     private Notificationrepository notificationRepository;
 
     public NotificationRecords saveNotificationRecord(NotificationRecords notificationRecord) {
-        System.out.println(notificationRecord);
+//        System.out.println(notificationRecord);
         return notificationRepository.save(notificationRecord);
     }
 }

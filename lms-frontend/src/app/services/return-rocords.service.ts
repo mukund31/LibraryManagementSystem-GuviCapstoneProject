@@ -24,4 +24,9 @@ export class ReturnRocordsService {
     return this.http.post<Return>(`${this.apiUrl}/add-return-record`, returnRecord, {
       headers: this.getHeaders()});
   }
+
+  createPenaltyRecord(penaltyRecord: any): Observable<any> {
+    return this.http.post<Return>(`${this.apiUrl}/pay-penalty`, penaltyRecord, {
+      headers: this.getHeaders()});
+  }
 }

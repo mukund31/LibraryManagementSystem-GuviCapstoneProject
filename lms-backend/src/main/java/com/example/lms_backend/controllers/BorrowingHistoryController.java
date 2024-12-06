@@ -16,7 +16,7 @@ public class BorrowingHistoryController {
 
     @PostMapping("/add-borrowing-history")
     public BorrowingHistory createBorrowingHistory(@RequestBody BorrowingHistory borrowingHistory) {
-        System.out.println("Cont: " +borrowingHistory);
+//        System.out.println("Cont: " +borrowingHistory);
         return borrowingHistoryService.saveBorrowingHistory(borrowingHistory);
     }
 }

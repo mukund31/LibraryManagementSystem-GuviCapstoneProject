@@ -26,7 +26,7 @@ import { BorrowerListComponent } from './components/borrower-list/borrower-list.
     AddBookComponent,
     BookListComponent,
     AdminEditBookComponent,
-    BorrowerListComponent,
+    BorrowerListComponent
   ],
   imports: [
     BrowserModule,

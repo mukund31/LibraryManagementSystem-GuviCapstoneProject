@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { ReturnRocordsService } from '../../services/return-rocords.service';
 import { Return } from '../../models/return.model';
 import { BorrowingHistoryService } from '../../services/borrowing-history.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -17,6 +18,12 @@ export class UserDashboardComponent implements OnInit {
   totalBooksBorrowed: number = 0;
   overdueBooksCount: number = 0;
   loading: boolean = true;
+
+  showPenaltyModal: boolean = false;
+  penaltyReason: string = '';
+  penaltyAmount: number = 0;
+  selectedBook: any = null;
+  bookRec: any =null;
 
   returnRecord: Return = {
     returnId: '',
@@ -31,7 +38,8 @@ export class UserDashboardComponent implements OnInit {
     private returnRecordService: ReturnRocordsService,
     private borrowingHistoryService: BorrowingHistoryService,
     private router: Router, 
-    private authService: AuthService) {}
+    private authService: AuthService,
+    private http: HttpClient) {}
 
   ngOnInit(): void {
     this.fetchBorrowingHistory();
@@ -74,6 +82,7 @@ export class UserDashboardComponent implements OnInit {
     const daysOverdue = this.getDaysOverdue(dueDate);
     const penaltyPerDay = 1;
     return daysOverdue * penaltyPerDay;
+    // return 100;
   }
 
   returnBook(book: any): void {
@@ -99,11 +108,9 @@ export class UserDashboardComponent implements OnInit {
     this.returnRecordService.createReturn(this.returnRecord).subscribe(
       (response) => {
         console.log('Return saved:', response);
-        alert('Return successfully recorded.');
       },
       (error) => {
         console.error('Error saving return:', error);
-        alert('Failed to save return.');
       }
     );
 
@@ -117,13 +124,93 @@ export class UserDashboardComponent implements OnInit {
     this.borrowingHistoryService.createBorrowingHistory(borrowingHistoryRecord).subscribe(
       (response) => {
         console.log('Borrowing History saved:', response);
-        alert('Borrowing History Successfully Recorded');
       },
       (error) => {
         console.error('Error saving borrowing history:', error);
-        alert('Failed to save borrowing history');
       }
     );
   }
+
+
+  payAndReturnBook(book: any): void {
+    this.openPenaltyModal(book);
+    this.bookRec=book;
+  }
   
+  openPenaltyModal(book: any): void {
+    this.selectedBook = book;
+    this.penaltyAmount = this.calculatePenalty(book.dueDate);
+    this.showPenaltyModal = true;
+  }
+
+  closePenaltyModal(): void {
+    this.showPenaltyModal = false;
+    this.penaltyReason = '';
+    this.penaltyAmount = 0;
+    this.selectedBook = null;
+  }
+
+  submitPenalty(): void {
+    if (!this.selectedBook) return;
+
+    const penaltyRecord = {
+      userId: this.authService.getUserId(),
+      amount: this.penaltyAmount,
+      reason: this.penaltyReason,
+      dateIssued: new Date(),
+      status: 'Paid',
+    };
+
+    this.returnRecordService.createPenaltyRecord(penaltyRecord).subscribe(
+      (response) => {
+        console.log('Penalty saved:', response);
+      },
+      (error) => {
+        console.error('Error saving penalty:', error);
+      }
+    );
+
+    this.returnRecord = {
+      borrowId: this.bookRec.borrowId,
+      returnDate: new Date(),
+      penaltyAmount: this.calculatePenalty(this.bookRec.dueDate),
+      processedBy: this.authService.getUserId() || 'Self',
+    };
+
+    this.borrowedBookService.returnBook(this.bookRec.borrowId).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.borrowedBooks = this.borrowedBooks.filter(b => b.borrowId !== this.bookRec.borrowId);
+      },
+      error: (err) => {
+        console.error('Error returning book:', err);
+      }
+    });
+
+
+    this.returnRecordService.createReturn(this.returnRecord).subscribe(
+      (response) => {
+        console.log('Return saved:', response);
+      },
+      (error) => {
+        console.error('Error saving return:', error);
+      }
+    );
+
+    let borrowingHistoryRecord= {
+      "userId": this.authService.getUserId(),
+      "bookId": this.bookRec.bookId,
+      "borrowId": this.bookRec.borrowId
+    }
+
+
+    this.borrowingHistoryService.createBorrowingHistory(borrowingHistoryRecord).subscribe(
+      (response) => {
+        console.log('Borrowing History saved:', response);
+      },
+      (error) => {
+        console.error('Error saving borrowing history:', error);
+      }
+    );
+  }
 }

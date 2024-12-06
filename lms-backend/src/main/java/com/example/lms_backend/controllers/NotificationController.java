@@ -15,7 +15,7 @@ public class NotificationController {
 
     @PostMapping("/add-notification-record")
     public NotificationRecords createNotification(@RequestBody NotificationRecords notificationRecord) {
-        System.out.println(notificationRecord);
+//        System.out.println(notificationRecord);
         return notificationService.saveNotificationRecord(notificationRecord);
     }
 }

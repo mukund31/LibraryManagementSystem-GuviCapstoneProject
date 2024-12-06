@@ -20,7 +20,7 @@ public class BorrowingHistoryService {
     private BorrowedBooksRepository borrowedBooksRepository;
 
     public BorrowingHistory saveBorrowingHistory(BorrowingHistory borrowingHistory) {
-        System.out.println("Ser: "+borrowingHistory);
+//        System.out.println("Ser: "+borrowingHistory);
 
         Optional<BorrowedBooks> borrowedBooksOptional = borrowedBooksRepository.findById(borrowingHistory.getBorrowId());
 
