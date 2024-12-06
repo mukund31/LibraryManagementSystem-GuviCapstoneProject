@@ -27,7 +27,7 @@ export class LoginComponent {
           const userRole = response.role;
 
           console.log(response);
-          if (userRole === 'admin') {
+          if (userRole === 'Admin') {
             this.router.navigate(['/admin-dashboard']);
           } else {
             this.router.navigate(['/books']);
