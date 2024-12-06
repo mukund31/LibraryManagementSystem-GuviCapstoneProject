@@ -14,10 +14,12 @@
         <p class="text-5xl font-semibold">{{ totalUsers }}</p>
         <h4 class="text-xl font-medium pt-4">Users</h4>
       </div>
-      <div class="bg-gray-700 p-6 rounded-lg text-white shadow-lg">
+      <button
+          [routerLink]="['/borrower-list']" 
+          class="bg-gray-700 p-6 rounded-lg text-white shadow-lg">
         <p class="text-5xl font-semibold">{{ totalCheckedOutBooks }}</p>
         <h4 class="text-xl font-medium pt-4">Borrowed</h4>
-      </div>
+      </button>
       <div class="bg-red-500 p-6 rounded-lg text-white shadow-lg">
         <p class="text-5xl font-semibold">{{ overdueBooksCount }}</p>
         <h4 class="text-xl font-medium pt-4">Overdues</h4>

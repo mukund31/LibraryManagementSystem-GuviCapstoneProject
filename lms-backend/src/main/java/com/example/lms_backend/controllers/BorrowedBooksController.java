@@ -35,6 +35,11 @@ public class BorrowedBooksController {
         return borrowBookService.getCheckedOutBooksCount();
     }
 
+    @GetMapping("/borrowed-books-list")
+    public List<BorrowedBooks> getAllBorrowedBooks(@RequestHeader("Authorization") String token) {
+        return borrowedBooksRepository.findByStatus("borrowed");
+    }
+
     @GetMapping("/overdue-books-count")
     public long getOverdueBooksCount() {
         return borrowBookService.getOverdueBooksCount();

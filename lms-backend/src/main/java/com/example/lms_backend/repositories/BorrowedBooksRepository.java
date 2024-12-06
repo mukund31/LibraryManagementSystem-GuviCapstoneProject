@@ -27,4 +27,6 @@ public interface BorrowedBooksRepository extends MongoRepository<BorrowedBooks, 
     long countByStatus(String status);
 
     long countByStatusAndBorrowDateBefore(String borrowed, Date overdueDateConverted);
+
+    List<BorrowedBooks> findByStatus(String status);
 }

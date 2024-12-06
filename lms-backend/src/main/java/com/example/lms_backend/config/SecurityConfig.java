@@ -62,7 +62,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .requestMatchers("/api/books/update/**").hasRole("Admin")
                 .requestMatchers("/api/books/delete/**").hasRole("Admin")
                 .requestMatchers("/api/checked-out-books-count").hasRole("Admin")
+                .requestMatchers("/api/borrowed-books-list").hasRole("Admin")
                 .requestMatchers("/api/overdue-books-count").hasRole("Admin")
+                .requestMatchers("/api/add-notification-record").hasRole("Admin")
                 .requestMatchers("/api/borrow").hasRole("User") // user
                 .requestMatchers("/api/books").hasAnyRole("Admin", "User")
                 .requestMatchers("/api/books/search").hasAnyRole("Admin", "User")

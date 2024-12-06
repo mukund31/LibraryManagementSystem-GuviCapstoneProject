@@ -13,6 +13,7 @@ import { AdminDashboardService } from './services/admin-dashboard.service';
 import { AddBookComponent } from './components/add-book/add-book.component';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { AdminEditBookComponent } from './components/admin-edit-book/admin-edit-book.component';
+import { BorrowerListComponent } from './components/borrower-list/borrower-list.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AdminEditBookComponent } from './components/admin-edit-book/admin-edit-
     AddBookComponent,
     BookListComponent,
     AdminEditBookComponent,
+    BorrowerListComponent,
   ],
   imports: [
     BrowserModule,

@@ -27,6 +27,13 @@ export class BorrowedBooksService {
     });
   }
 
+  private getBorrowedListHeaders(): HttpHeaders {
+    const token = localStorage.getItem('jwt_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
   borrowBook(userId: string, bookId: string): Observable<any> {
     const params = new URLSearchParams();
     params.set('userId', userId);
@@ -36,6 +43,25 @@ export class BorrowedBooksService {
       headers: this.getBorrowHeaders(),
       responseType: 'text' as 'json'
     });
+  }
+
+  getBorrowedBooks(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/borrowed-books-list`, { headers: this.getBorrowedListHeaders() });
+  }
+
+  notifyBorrower(book: any): Observable<any> {
+    const notifyBody={
+      "userId": book.userId,
+      "bookId": book.bookId,
+      "message": "Return Reminder",
+      "notificationType": "Reminder",
+      "timestamp": Date
+    }
+
+    return this.http.post(`${this.apiUrl}/add-notification-record`, notifyBody, {
+      headers: this.getHeaders(),
+      responseType: 'text' as 'json'
+    })
   }
 
   returnBook(borrowId: string): Observable<any> {

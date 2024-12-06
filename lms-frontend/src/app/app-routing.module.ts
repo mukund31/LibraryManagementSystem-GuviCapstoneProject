@@ -9,12 +9,14 @@ import { BookDetailsComponent } from './components/book-details/book-details.com
 import { AddBookComponent } from './components/add-book/add-book.component';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { AdminEditBookComponent } from './components/admin-edit-book/admin-edit-book.component';
+import { BorrowerListComponent } from './components/borrower-list/borrower-list.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'user-dashboard', component: UserDashboardComponent},
   { path: 'admin-dashboard', component: AdminDashboardComponent},
+  { path: 'borrower-list', component: BorrowerListComponent},
   { path: 'books', component: BookCatalogComponentComponent },
   { path: 'books/:id', component: BookDetailsComponent },
   { path: 'admin/add-book', component: AddBookComponent },
