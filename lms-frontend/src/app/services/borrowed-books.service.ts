@@ -45,6 +45,17 @@ export class BorrowedBooksService {
     });
   }
 
+  reserveBook(userId: string, bookId: string): Observable<any> {
+    const reservatioBody= {
+      "userId": userId,
+      "bookId": bookId,
+    }
+  
+    return this.http.post(`${this.apiUrl}/add-reservation`, reservatioBody, {
+      headers: this.getHeaders()
+    });
+  }
+
   getBorrowedBooks(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/borrowed-books-list`, { headers: this.getBorrowedListHeaders() });
   }

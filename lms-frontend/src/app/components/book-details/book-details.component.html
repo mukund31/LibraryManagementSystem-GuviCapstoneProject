@@ -15,6 +15,13 @@
       >
         Borrow Book
       </button>
+      <button
+        *ngIf="book && book.copiesAvailable == 0"
+        (click)="reserveBook()"
+        class="btn btn-primary px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300"
+      >
+        Notify when available
+      </button>
       <p *ngIf="borrowStatus" class="mt-4 text-green-500">{{ borrowStatus }}</p>
     </div>
   </div>

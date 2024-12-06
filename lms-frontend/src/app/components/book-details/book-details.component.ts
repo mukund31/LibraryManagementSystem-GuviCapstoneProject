@@ -13,6 +13,7 @@ import { Book } from '../../models/book.model';
 export class BookDetailsComponent implements OnInit {
   book: Book | undefined;
   borrowStatus: string | undefined;
+  reserveStatus: string | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,6 +49,29 @@ export class BookDetailsComponent implements OnInit {
           (error) => {
             console.error(error);
             this.borrowStatus = 'Failed to borrow the book. Please try again later.';
+          }
+        );
+      } else {
+        this.borrowStatus = 'User not authenticated.';
+      }
+    } else {
+      this.borrowStatus = 'Book not found or invalid bookId.';
+    }
+  }
+
+  reserveBook(): void {
+    if (this.book?.bookId) {
+      const userId = this.authService.getUserId();
+      console.log("UserId: " + userId);
+  
+      if (userId) {
+        this.borrowBookService.reserveBook(userId, this.book.bookId).subscribe(
+          (response) => {
+            this.reserveStatus = "Book Reserved Successfully";
+          },
+          (error) => {
+            console.error(error);
+            this.borrowStatus = 'Failed to reserve the book. Please try again later.';
           }
         );
       } else {
