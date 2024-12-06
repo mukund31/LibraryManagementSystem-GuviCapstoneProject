@@ -9,18 +9,19 @@ import { AddBookComponent } from './components/add-book/add-book.component';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { AdminEditBookComponent } from './components/admin-edit-book/admin-edit-book.component';
 import { BorrowerListComponent } from './components/borrower-list/borrower-list.component';
+import { RoleGuard } from './role.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'books', component: BookCatalogComponentComponent },
-  { path: 'user-dashboard', component: UserDashboardComponent},
-  { path: 'admin-dashboard', component: AdminDashboardComponent},
-  { path: 'borrower-list', component: BorrowerListComponent},
-  { path: 'books-list', component: BookListComponent },
-  { path: 'edit-book/:id', component: AdminEditBookComponent },
-  { path: 'admin/add-book', component: AddBookComponent }
+  { path: 'user-dashboard', component: UserDashboardComponent, canActivate: [RoleGuard], data: {role: 'ROLE_User'}},
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}},
+  { path: 'borrower-list', component: BorrowerListComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}},
+  { path: 'books-list', component: BookListComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}},
+  { path: 'edit-book/:id', component: AdminEditBookComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}},
+  { path: 'admin/add-book', component: AddBookComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}}
 
 ];
 
