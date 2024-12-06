@@ -1,4 +1,4 @@
-<div class="container mx-auto p-4">
+<div class="container mx-auto p-4 w-2/3">
   <h2 class="text-2xl font-bold text-center mb-6">Book Catalog</h2>
 
   <div class="mb-4 flex items-center">
@@ -6,6 +6,7 @@
       type="text"
       [(ngModel)]="searchQuery"
       placeholder="Search"
+      (input)="searchBooks()"
       class="input p-2 border rounded-md mr-2 flex-grow"
     />
     <button
@@ -16,58 +17,116 @@
     </button>
   </div>
 
-  <div class="mb-6">
-    <label class="mr-4">
-      <input
-        type="checkbox"
-        [(ngModel)]="searchTypes[0]"
-        class="mr-1"
-      />
-      Title
-    </label>
-    <label class="mr-4">
-      <input
-        type="checkbox"
-        [(ngModel)]="searchTypes[1]"
-        class="mr-1"
-      />
-      Author
-    </label>
-    <label class="mr-4">
-      <input
-        type="checkbox"
-        [(ngModel)]="searchTypes[2]"
-        class="mr-1"
-      />
-      Genre
-    </label>
+  <div class="mb-6 flex justify-between">
+    <div>
+      <label class="mr-4">
+        <input type="checkbox" [(ngModel)]="searchTypes[0]" class="mr-1"/> 
+        Title
+      </label>
+      <label class="mr-4">
+        <input type="checkbox" [(ngModel)]="searchTypes[1]" class="mr-1"/>
+        Author
+      </label>
+      <label class="mr-4">
+        <input type="checkbox" [(ngModel)]="searchTypes[2]" class="mr-1"/>
+        Genre
+      </label>
+    </div>
+    <button
+      [routerLink]="['/user-dashboard']"
+      class="btn btn-primary px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-700"
+    >
+      Go to User Dashboard
+    </button>
   </div>
 
   <div *ngIf="noResultsFound" class="text-center text-red-500">
     No books found
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+  <div class="grid grid-cols-2 gap-x-4">
     <div
       *ngFor="let book of books"
-      class="book-item bg-white p-4 rounded-md shadow-md cursor-pointer hover:shadow-lg transition"
-      [routerLink]="['/books', book.bookId]"
+      class="book-item bg-white p-4 rounded-md shadow-xl cursor-pointer hover:shadow-lg transition flex gap-4 my-2"
+      (click)="openModal(book)"
     >
-      <h3 class="text-xl font-semibold mb-2">{{ book.title }}</h3>
-      <p class="mb-1">Author: {{ book.author }}</p>
-      <p class="mb-1">Genre: {{ book.genre }}</p>
-      <p class="mb-1">ISBN: {{ book.isbn }}</p>
-      <p class="mb-1">Copies Available: {{ book.copiesAvailable }}</p>
-      <p>Location: {{ book.location }}</p>
+      <div class="flex justify-center">
+        <img
+          *ngIf="book.coverImageBase64"
+          [src]="book.coverImageBase64.startsWith('data:image') ? book.coverImageBase64 : 'data:image/jpeg;base64,' + book.coverImageBase64"
+          alt="Book Cover"
+          class="w-28 h-full rounded-md"
+        />
+        <div *ngIf="!book.coverImageBase64" class="w-full h-full p-2 bg-gray-300 flex items-center justify-center rounded-md text-gray-500">
+          No Image Available
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold mb-2">{{ book.title }}</h3>
+        <p class="mb-1">Author: {{ book.author }}</p>
+        <p class="mb-1">Genre: {{ book.genre }}</p>
+        <p class="mb-1">ISBN: {{ book.isbn }}</p>
+        <p class="mb-1">Copies Available: {{ book.copiesAvailable }}</p>
+        <p>Location: {{ book.location }}</p>
+      </div>
     </div>
   </div>
 
-  <div class="text-center mt-6">
-    <button
-      [routerLink]="['/user-dashboard']"
-      class="btn btn-primary px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-700"
-    >
-      Go to User Dashboard
-    </button>
+  <div *ngIf="isModalOpen" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+      <button (click)="closeModal()" class="mb-4 text-red-500 text-center w-full">
+        <svg fill="#000000" height="15px" width="15px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+          viewBox="0 0 490 490" xml:space="preserve">
+        <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 
+          489.292,457.678 277.331,245.004 489.292,32.337 "/>
+        </svg>
+      </button>
+      <div class="flex gap-x-4">
+        <div class="flex justify-center">
+          <img
+            *ngIf="selectedBook?.coverImageBase64 as coverImage; else noImage"
+            [src]="coverImage.startsWith('data:image') ? coverImage : 'data:image/jpeg;base64,' + coverImage"
+            alt="Book Cover"
+            class="w-28 h-full rounded-md"
+          />
+          <ng-template #noImage>
+            <div
+              class="w-full h-full p-2 bg-gray-300 flex items-center justify-center rounded-md text-gray-500"
+            >
+              No Image Available
+            </div>
+          </ng-template>
+        </div>
+        
+        <div>
+          <h2 class="text-3xl font-bold mb-4 text-center">{{ selectedBook?.title }}</h2>
+          <p class="text-lg"><strong>Author:</strong> {{ selectedBook?.author }}</p>
+          <p class="text-lg"><strong>Genre:</strong> {{ selectedBook?.genre }}</p>
+          <p class="text-lg"><strong>ISBN:</strong> {{ selectedBook?.isbn }}</p>
+          <p class="text-lg"><strong>Copies Available:</strong> {{ selectedBook?.copiesAvailable }}</p>
+          <p class="text-lg"><strong>Location:</strong> {{ selectedBook?.location }}</p>
+        </div>
+      </div>
+
+      <div class="mt-6 text-center">
+        <button
+          *ngIf="selectedBook && selectedBook.copiesAvailable > 0"
+          (click)="borrowBook()"
+          class="btn btn-primary px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-300"
+        >
+          Borrow Book
+        </button>
+        <p *ngIf="borrowStatus" class="mt-4 text-green-500">{{ borrowStatus }}</p>
+        <button
+        *ngIf="selectedBook && selectedBook.copiesAvailable == 0"
+        (click)="reserveBook()"
+        class="btn btn-primary px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300"
+        >
+        Notify when available
+      </button>
+      <p *ngIf="reserveStatus" class="mt-4 text-green-500">{{ reserveStatus }}</p>
+      </div>
+
+    </div>
   </div>
 </div>

@@ -31,6 +31,17 @@ export class AdminEditBookComponent implements OnInit {
     }
   }
 
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.book.coverImageBase64 = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit(): void {
     if (this.book.bookId) {
       this.bookService.updateBook(this.book.bookId, this.book).subscribe(

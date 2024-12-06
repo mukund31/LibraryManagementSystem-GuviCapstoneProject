@@ -5,7 +5,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { BookCatalogComponentComponent } from './components/book-catalog-component/book-catalog-component.component';
-import { BookDetailsComponent } from './components/book-details/book-details.component';
+// import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { AddBookComponent } from './components/add-book/add-book.component';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { AdminEditBookComponent } from './components/admin-edit-book/admin-edit-book.component';
@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'admin-dashboard', component: AdminDashboardComponent},
   { path: 'borrower-list', component: BorrowerListComponent},
   { path: 'books', component: BookCatalogComponentComponent },
-  { path: 'books/:id', component: BookDetailsComponent },
+  // { path: 'books/:id', component: BookDetailsComponent },
   { path: 'admin/add-book', component: AddBookComponent },
   { path: 'books-list', component: BookListComponent },
   { path: 'edit-book/:id', component: AdminEditBookComponent },

@@ -87,6 +87,8 @@ public class BookController {
         Optional<Book> existingBook = bookRepository.findById(id);
         if (existingBook.isPresent()) {
             Book book = existingBook.get();
+
+            // Do not update the `id` field
             book.setTitle(bookDetails.getTitle());
             book.setAuthor(bookDetails.getAuthor());
             book.setGenre(bookDetails.getGenre());
@@ -94,13 +96,36 @@ public class BookController {
             book.setIsbn(bookDetails.getIsbn());
             book.setCopiesAvailable(bookDetails.getCopiesAvailable());
             book.setLocation(bookDetails.getLocation());
+            book.setCoverImageBase64(bookDetails.getCoverImageBase64());
 
+            // Save the updated book, but the `id` remains unchanged
             Book updatedBook = bookRepository.save(book);
             return ResponseEntity.ok(updatedBook);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<Book> updateBook(@PathVariable String id, @RequestBody Book bookDetails) {
+//        Optional<Book> existingBook = bookRepository.findById(id);
+//        if (existingBook.isPresent()) {
+//            Book book = existingBook.get();
+//            book.setTitle(bookDetails.getTitle());
+//            book.setAuthor(bookDetails.getAuthor());
+//            book.setGenre(bookDetails.getGenre());
+//            book.setPublicationYear(bookDetails.getPublicationYear());
+//            book.setIsbn(bookDetails.getIsbn());
+//            book.setCopiesAvailable(bookDetails.getCopiesAvailable());
+//            book.setLocation(bookDetails.getLocation());
+//            book.setCoverImageBase64(bookDetails.getCoverImageBase64());
+//
+//            Book updatedBook = bookRepository.save(book);
+//            return ResponseEntity.ok(updatedBook);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable String id) {

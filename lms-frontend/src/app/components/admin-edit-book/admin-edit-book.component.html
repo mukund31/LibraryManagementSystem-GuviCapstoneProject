@@ -88,6 +88,17 @@
         />
       </div>
 
+      <div>
+        <label for="bookCoverImage" class="block font-medium">Book Cover Image</label>
+        <input
+          type="file"
+          id="bookCoverImage"
+          name="bookCoverImage"
+          (change)="onFileChange($event)"
+          class="w-full px-4 py-2 border rounded-md"
+        />
+      </div>
+
       <button
         type="submit"
         [disabled]="!bookForm.valid"
