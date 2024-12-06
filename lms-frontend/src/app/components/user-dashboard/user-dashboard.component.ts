@@ -5,6 +5,7 @@ import { UserDashboardServiceService } from '../../services/user-dashboard-servi
 import { AuthService } from '../../services/auth.service';
 import { ReturnRocordsService } from '../../services/return-rocords.service';
 import { Return } from '../../models/return.model';
+import { BorrowingHistoryService } from '../../services/borrowing-history.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -28,6 +29,7 @@ export class UserDashboardComponent implements OnInit {
   constructor(private userDashBoardService: UserDashboardServiceService,
     private borrowedBookService: BorrowedBooksService,
     private returnRecordService: ReturnRocordsService,
+    private borrowingHistoryService: BorrowingHistoryService,
     private router: Router, 
     private authService: AuthService) {}
 
@@ -102,6 +104,24 @@ export class UserDashboardComponent implements OnInit {
       (error) => {
         console.error('Error saving return:', error);
         alert('Failed to save return.');
+      }
+    );
+
+    let borrowingHistoryRecord= {
+      "userId": this.authService.getUserId(),
+      "bookId": book.bookId,
+      "borrowId": book.borrowId
+    }
+
+
+    this.borrowingHistoryService.createBorrowingHistory(borrowingHistoryRecord).subscribe(
+      (response) => {
+        console.log('Borrowing History saved:', response);
+        alert('Borrowing History Successfully Recorded');
+      },
+      (error) => {
+        console.error('Error saving borrowing history:', error);
+        alert('Failed to save borrowing history');
       }
     );
   }
