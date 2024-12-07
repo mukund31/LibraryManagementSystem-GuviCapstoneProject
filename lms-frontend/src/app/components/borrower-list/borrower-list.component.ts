@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { BorrowedBooksService } from '../../services/borrowed-books.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-borrower-list',
@@ -11,7 +12,9 @@ export class BorrowerListComponent {
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
-  constructor(private borrowedBooksService: BorrowedBooksService) {}
+  constructor(private borrowedBooksService: BorrowedBooksService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.loadBorrowedBooks();
@@ -20,7 +23,22 @@ export class BorrowerListComponent {
   loadBorrowedBooks(): void {
     this.borrowedBooksService.getBorrowedBooks().subscribe(
       (data) => {
-        this.borrowedBooks = data;
+        console.log(data);
+        
+        data.forEach((book: any) => {
+          this.userService.getUserById(book.userId).subscribe(
+            (user) => {
+              this.borrowedBooks.push({
+                ...book,
+                username: user.username // Add the username to the book object
+              });
+            },
+            (error) => {
+              console.error('Error fetching user details:', error);
+              this.errorMessage = 'Unable to load user details for borrowed books.';
+            }
+          );
+        });
       },
       (error) => {
         console.error('Error loading borrowed books:', error);

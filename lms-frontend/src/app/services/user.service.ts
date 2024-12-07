@@ -23,4 +23,10 @@ export class UserService {
     return this.http.get<number>(`${this.apiUrl}/user-count`, {
       headers: this.getHeaders()});
   }
+
+  getUserById(userId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/users/${userId}`, {
+      headers: this.getHeaders()
+    });
+  }
 }
