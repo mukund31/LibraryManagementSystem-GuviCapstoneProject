@@ -3,6 +3,7 @@ package com.example.lms_backend.controllers;
 import com.example.lms_backend.AuthResponse;
 import com.example.lms_backend.config.JwtUtil;
 import com.example.lms_backend.models.User;
+import com.example.lms_backend.models.UserData;
 import com.example.lms_backend.services.AuthService;
 import com.example.lms_backend.services.PlatformAccessService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,8 +37,9 @@ public class AuthController {
 //    }
 
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        return authService.registerUser(user);
+    public String register(@RequestBody UserData userData) {
+        System.out.println(userData);
+        return authService.registerUser(userData);
     }
 
     @PostMapping("/login")

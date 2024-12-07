@@ -1,6 +1,9 @@
 package com.example.lms_backend.services;
 
 import com.example.lms_backend.models.User;
+import com.example.lms_backend.models.UserData;
+import com.example.lms_backend.models.UserProfiles;
+import com.example.lms_backend.repositories.UserProfilesRepository;
 import com.example.lms_backend.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -16,10 +19,28 @@ import java.util.Optional;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final UserProfilesRepository userProfilesRepository;
     private final BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
     private final String secretKey = "30cf8e906ff43acaa9fd01cd4cef20a382ba5114a4b54dfe4b7ade7d7eebee2be0b7dfac17522123077f7698316b45245e7781e704ffb4192c5ef926665c43b236a95fb9f554078f19cc34924212955c09df46229ce3dc880c71e2cd8ff1f0b28ea3d336d3a424f2564158b30cb2a7778e1aacc91c08f71f16ee6f74b0c81c4888cdb040bdf97ca3d6dab6c4a020e9b3c397ac0e6c604df1e8ae2ca6abc9ee872da3af6dfe2827de6b8df764f32f1dfae43eadc8869514044de8cc545026bfdf160a7bab3e0f26010afb9fede3165f6987c00561d31a99fa2e69e29e02d7ce634b2efe09d229de7a7315f1426f4958b7c0e4df572632767767b009afb2e810b7";
 
-    public String registerUser(User user) {
+    public String registerUser(UserData userData) {
+        User user=new User();
+        user.setUsername(userData.getUsername());
+        user.setPassword(userData.getPassword());
+        user.setRole(userData.getRole());
+        user.setEmail(userData.getEmail());
+        user.setPhoneNum(userData.getPhoneNum());
+
+        System.out.println("USER: "+user);
+
+        UserProfiles userProfile=new UserProfiles();
+        userProfile.setName(userData.getName());
+        userProfile.setAddress(userData.getAddress());
+        userProfile.setPreferedGenres(userData.getPreferedGenres());
+        userProfile.setProfileImageBase64(userData.getProfileImageBase64());
+
+        System.out.println("USER PROFILE: "+userProfile);
+
         try {
             Optional<User> userOpt = userRepository.findByUsername(user.getUsername());
             if(userOpt.isPresent()) {
@@ -27,7 +48,9 @@ public class AuthService {
             }
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setActive(true);
-            userRepository.save(user);
+            User savedUser=userRepository.save(user);
+            userProfile.setUserId(savedUser.getId());
+            userProfilesRepository.save(userProfile);
             return "User registered successfully!";
         }
         catch(Exception e) {

@@ -1,66 +1,120 @@
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
-  <div class="w-full max-w-lg p-8 bg-white rounded-lg shadow-md">
+  <div class="w-full max-w-3xl p-8 bg-white rounded-lg shadow-md">
     <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Register</h2>
     
     <form (ngSubmit)="onSubmit()" class="space-y-6">
-      <div>
-        <label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
-        <input 
-          type="text" 
-          id="username" 
-          [(ngModel)]="user.username" 
-          name="username" 
-          required 
-          class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-        />
-      </div>
-      
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
-        <input 
-          type="email" 
-          id="email" 
-          [(ngModel)]="user.email" 
-          name="email" 
-          required 
-          class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-        />
-      </div>
-      
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
-        <input 
-          type="password" 
-          id="password" 
-          [(ngModel)]="user.password" 
-          name="password" 
-          required 
-          class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-        />
-      </div>
-      
-      <div>
-        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password:</label>
-        <input 
-          type="password" 
-          id="confirmPassword" 
-          [(ngModel)]="user.confirmPassword" 
-          name="confirmPassword" 
-          required 
-          class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-        />
-      </div>
-      
-      <div>
-        <label for="phoneNum" class="block text-sm font-medium text-gray-700">Phone Number:</label>
-        <input 
-          type="tel" 
-          id="phoneNum" 
-          [(ngModel)]="user.phoneNum" 
-          name="phoneNum" 
-          required 
-          class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-        />
+      <div class="flex space-x-4">
+        <div class="w-full space-y-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Name:<span class="text-red-500">*</span></label>
+            <input 
+              type="text" 
+              id="name" 
+              [(ngModel)]="user.name" 
+              name="username" 
+              required 
+              class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+            />
+          </div>
+          
+          <div>
+            <label for="address" class="block text-sm font-medium text-gray-700">Address:<span class="text-red-500">*</span></label>
+            <input 
+              type="text" 
+              id="address" 
+              [(ngModel)]="user.address" 
+              name="address" 
+              required 
+              class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+            />
+          </div>
+          
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email:<span class="text-red-500">*</span></label>
+            <input 
+            type="email" 
+              id="email" 
+              [(ngModel)]="user.email" 
+              name="email" 
+              required 
+              class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+            />
+          </div>
+          
+          <div>
+            <label for="phoneNum" class="block text-sm font-medium text-gray-700">Phone Number:<span class="text-red-500">*</span></label>
+            <input 
+              type="tel" 
+              id="phoneNum" 
+              [(ngModel)]="user.phoneNum" 
+              name="phoneNum" 
+              required 
+              class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+            />
+          </div>
+          
+          <div>
+            <label for="preferedGenres" class="block text-sm font-medium text-gray-700">Preferred Genres:</label>
+            <input 
+              type="tel" 
+              id="preferedGenres" 
+              [(ngModel)]="user.preferedGenres" 
+              name="preferedGenres"
+              class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+            />
+          </div>
+        </div>
+        
+        <div class="w-full space-y-6">
+          <div>
+            <label for="username" class="block text-sm font-medium text-gray-700">Username:<span class="text-red-500">*</span></label>
+            <input 
+              type="text" 
+              id="username" 
+              [(ngModel)]="user.username" 
+              name="username" 
+              required 
+              class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+            />
+          </div>
+          
+          
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Password:<span class="text-red-500">*</span></label>
+            <input 
+              type="password" 
+              id="password" 
+              [(ngModel)]="user.password" 
+              name="password" 
+              required 
+              class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+            />
+          </div>
+          
+          <div>
+            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password:<span class="text-red-500">*</span></label>
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              [(ngModel)]="user.confirmPassword" 
+              name="confirmPassword" 
+              required 
+              class="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+            />
+          </div>
+          
+    
+          <div>
+            <label for="profileImageBase64" class="block text-sm font-medium text-gray-700">Profile Image</label>
+            <input
+              type="file"
+              id="profileImageBase64"
+              name="profileImageBase64"
+              (change)="onFileChange($event)"
+              class="w-full px-4 py-2 mt-2 border rounded-md"
+            />
+          </div>
+        </div>
       </div>
 
       <div class="mt-4">

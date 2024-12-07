@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -8,12 +9,15 @@ import { Router } from '@angular/router';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  user = {
+  user: User = {
+    name: '',
+    address: '',
     username: '',
     password: '',
     confirmPassword: '',
     email: '',
-    phoneNum: '',
+    phoneNum: 0,
+    preferedGenres: '',
     role: ''
   };
 
@@ -36,6 +40,17 @@ export class RegisterComponent {
     }
     else {
       this.errorMessage = "Both Passwords must Match";
+    }
+  }
+
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.user.profileImageBase64 = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 }
