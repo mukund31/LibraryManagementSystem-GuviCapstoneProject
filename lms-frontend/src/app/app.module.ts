@@ -11,6 +11,8 @@ import { BookCatalogComponentComponent } from './components/book-catalog-compone
 import { AdminDashboardService } from './services/admin-dashboard.service';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { BorrowerListComponent } from './components/borrower-list/borrower-list.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { BorrowerListComponent } from './components/borrower-list/borrower-list.
     AdminDashboardComponent,
     BookCatalogComponentComponent,
     BookListComponent,
-    BorrowerListComponent
+    BorrowerListComponent,
+    NavBarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

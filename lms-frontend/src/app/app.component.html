@@ -1,8 +1,6 @@
-<!-- <div *ngIf="authService.isAdmin()">
-    <a routerLink="/admin-dashboard">Admin Dashboard</a>
+<div class="flex flex-col justify-between h-screen">
+    <app-nav-bar></app-nav-bar>
+  <router-outlet></router-outlet>
+
+  <app-footer></app-footer>
 </div>
-<div *ngIf="authService.isUser()">
-    <a routerLink="/user-dashboard">User Dashboard</a>
-</div> -->
-  
-<router-outlet></router-outlet>
