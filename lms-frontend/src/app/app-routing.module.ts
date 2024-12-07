@@ -5,9 +5,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { BookCatalogComponentComponent } from './components/book-catalog-component/book-catalog-component.component';
-import { AddBookComponent } from './components/add-book/add-book.component';
 import { BookListComponent } from './components/book-list/book-list.component';
-import { AdminEditBookComponent } from './components/admin-edit-book/admin-edit-book.component';
 import { BorrowerListComponent } from './components/borrower-list/borrower-list.component';
 import { RoleGuard } from './role.guard';
 
@@ -20,9 +18,6 @@ const routes: Routes = [
   { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}},
   { path: 'borrower-list', component: BorrowerListComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}},
   { path: 'books-list', component: BookListComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}},
-  { path: 'edit-book/:id', component: AdminEditBookComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}},
-  { path: 'admin/add-book', component: AddBookComponent, canActivate: [RoleGuard], data: {role: 'ROLE_Admin'}}
-
 ];
 
 @NgModule({

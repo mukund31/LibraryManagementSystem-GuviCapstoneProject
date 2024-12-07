@@ -10,7 +10,6 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { BookCatalogComponentComponent } from './components/book-catalog-component/book-catalog-component.component';
 import { AdminDashboardService } from './services/admin-dashboard.service';
 import { BookListComponent } from './components/book-list/book-list.component';
-import { AdminEditBookComponent } from './components/admin-edit-book/admin-edit-book.component';
 import { BorrowerListComponent } from './components/borrower-list/borrower-list.component';
 
 @NgModule({
@@ -21,7 +20,6 @@ import { BorrowerListComponent } from './components/borrower-list/borrower-list.
     AdminDashboardComponent,
     BookCatalogComponentComponent,
     BookListComponent,
-    AdminEditBookComponent,
     BorrowerListComponent
   ],
   imports: [

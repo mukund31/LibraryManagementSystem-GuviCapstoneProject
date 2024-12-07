@@ -15,13 +15,24 @@ export class BookListComponent implements OnInit {
   searchQuery: string = '';
 
   isAddBookModalOpen: boolean = false;
+  isEditBookModalOpen: boolean = false;
 
-  page: number = 0;
+  page: number = 0; 
   size: number = 10;
   loading: boolean = false;
   hasMore: boolean = true;
 
   book: Book = {
+    title: '',
+    author: '',
+    genre: '',
+    publicationYear: new Date().getFullYear(),
+    isbn: '',
+    copiesAvailable: 1,
+    location: ''
+  };
+
+  selectedBook: Book = {
     title: '',
     author: '',
     genre: '',
@@ -144,6 +155,36 @@ export class BookListComponent implements OnInit {
         console.error('Error adding book:', error);
         this.errorMessage = 'Error adding book.';
         this.successMessage = null;
+      }
+    );
+  }
+
+  openEditBookModal(book: Book): void {
+    this.selectedBook = { ...book }; // Copy selected book data
+    this.isEditBookModalOpen = true;
+  }
+
+  closeEditBookModal(): void {
+    this.isEditBookModalOpen = false;
+  }
+
+  onUpdateBook(): void {
+    const bookId = this.selectedBook.bookId || '';  // Fallback to empty string if bookId is undefined
+    if (!bookId) {
+      console.error('Book ID is missing');
+      return;
+    }
+    
+    this.bookService.updateBook(bookId, this.selectedBook).subscribe(
+      (updatedBook) => {
+        const index = this.books.findIndex(b => b.bookId === updatedBook.bookId);
+        if (index !== -1) {
+          this.books[index] = updatedBook;
+        }
+        this.closeEditBookModal();
+      },
+      (error) => {
+        console.error('Error updating book:', error);
       }
     );
   }

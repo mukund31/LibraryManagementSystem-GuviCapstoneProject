@@ -25,6 +25,7 @@
     <table class="min-w-full bg-white shadow-md rounded-lg">
       <thead>
         <tr class="border-b">
+          <th class="px-4 py-2 text-left text-sm font-medium">#</th>
           <th class="px-4 py-2 text-left text-sm font-medium">Book Title</th>
           <th class="px-4 py-2 text-left text-sm font-medium">Borrowed Date</th>
           <th class="px-4 py-2 text-left text-sm font-medium">Due Date</th>
@@ -34,7 +35,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let book of borrowedBooks" class="border-b">
+        <tr *ngFor="let book of borrowedBooks; let i = index" class="border-b">
+          <td class="px-4 py-2 border-b">{{ i + 1 }}</td>
+          <td class="px-4 py-2 text-sm">{{ book.title }}</td>
           <td class="px-4 py-2 text-sm">{{ book.title }}</td>
           <td class="px-4 py-2 text-sm">{{ book.borrowDate | date }}</td>
           <td class="px-4 py-2 text-sm">{{ book.dueDate | date }}</td>
