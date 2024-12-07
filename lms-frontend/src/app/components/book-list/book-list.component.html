@@ -8,87 +8,96 @@
       scrollbar-width: none;
     }
   </style>
-  <div class="book-list-container bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl h-screen overflow-y-scroll" (scroll)="onScroll($event)">
-    <div class="mb-4 flex justify-between items-center">
-      <h2 class="text-2xl font-semibold">Books List</h2>
-      <div >
-        <button (click)="openAddBookModal()" 
-          class="bg-green-500 px-2 py-2 rounded-md text-white font-bold mr-2"
-        >Add Book</button>
+  <div>
+
+    <button [routerLink]="['/admin-dashboard']" 
+    class="flex text-blue-600 hover:text-blue-800 hover:underline text-sm my-4">
+      <svg class="my-1" fill="#0000dd" height="12px" width="12px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+      viewBox="0 0 404.258 404.258" xml:space="preserve">
+      <polygon points="289.927,18 265.927,0 114.331,202.129 265.927,404.258 289.927,386.258 151.831,202.129 "/>
+    </svg>
+    Return to Admin Dashboard
+    </button>
+    <div class="book-list-container bg-white p-3 lg:p-6 rounded-lg shadow-lg w-full max-w-5xl h-screen overflow-y-scroll" (scroll)="onScroll($event)">
+      <div class="mb-4 flex justify-between items-center">
+        <h2 class="text-2xl font-semibold">Books List</h2>
         <input
-          type="text"
-          [(ngModel)]="searchQuery"
-          placeholder="Search by keyword"
-          (input)="onSearch()"
-          class="px-4 py-2 border rounded-md"
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Search by keyword"
+        (input)="onSearch()"
+        class="px-4 py-2 border rounded-md mr-2"
         />
+        <button (click)="openAddBookModal()" 
+          class="bg-green-500 px-2 py-2 rounded-md text-white font-bold"
+        >Add Book</button>
       </div>
+  
+      <div *ngIf="books.length === 0" class="text-center text-gray-500">
+        No books available.
+      </div>
+  
+      <table *ngIf="books.length > 0" class="min-w-full table-auto">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-1 lg:px-4 py-2 border-b text-left hidden lg:table-cell">#</th>
+            <th class="px-1 lg:px-4 py-2 border-b text-left">Cover Page</th>
+            <th class="px-1 lg:px-4 py-2 border-b text-left">Title</th>
+            <th class="px-1 lg:px-4 py-2 border-b text-left">Author</th>
+            <th class="px-1 lg:px-4 py-2 border-b text-left hidden lg:table-cell">Genre</th>
+            <th class="px-1 lg:px-4 py-2 border-b text-left hidden lg:table-cell">Year</th>
+            <th class="px-1 lg:px-4 py-2 border-b text-left">Availability</th>
+            <th class="px-1 lg:px-4 py-2 border-b text-left hidden lg:table-cell">Location</th>
+            <th class="px-1 lg:px-4 py-2 border-b text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of books; let i = index">
+            <td class="px-1 lg:px-4 py-2 border-b hidden lg:table-cell">{{ i + 1 }}</td>
+            <td class="px-1 lg:px-4 py-2 border-b">
+              <img
+            *ngIf="book.coverImageBase64"
+            [src]="book.coverImageBase64.startsWith('data:image') ? book.coverImageBase64 : 'data:image/jpeg;base64,' + book.coverImageBase64"
+            alt="Book Cover"
+            class="w-20 h-full rounded-md"
+          />
+          <div *ngIf="!book.coverImageBase64" class="w-20 h-full p-2 bg-gray-300 flex items-center justify-center rounded-md text-gray-500 ">
+            No Image Available
+          </div>
+            </td>
+            <td class="px-1 lg:px-4 py-2 border-b">{{ book.title }}</td>
+            <td class="px-1 lg:px-4 py-2 border-b">{{ book.author }}</td>
+            <td class="px-1 lg:px-4 py-2 border-b hidden lg:table-cell">{{ book.genre }}</td>
+            <td class="px-1 lg:px-4 py-2 border-b hidden lg:table-cell">{{ book.publicationYear }}</td>
+            <td class="px-1 lg:px-4 py-2 border-b">{{ book.copiesAvailable }}</td>
+            <td class="px-1 lg:px-4 py-2 border-b hidden lg:table-cell">{{ book.location }}</td>
+            <td class="px-1 lg:px-4 py-2 border-b text-center gap-y-2">
+              <div class="">
+                <button
+                  (click)="openEditBookModal(book)"
+                  class="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-md w-full mb-2"
+                >
+                  Edit
+                </button>
+                <button
+                  (click)="onDelete(book)"
+                  class="bg-red-500 hover:bg-red-600 text-white p-1 rounded-md w-full"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <div *ngIf="books.length === 0" class="text-center text-gray-500">
-      No books available.
-    </div>
-
-    <table *ngIf="books.length > 0" class="min-w-full table-auto">
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="px-4 py-2 border-b text-left">#</th>
-          <th class="px-4 py-2 border-b text-left">Cover Page</th>
-          <th class="px-4 py-2 border-b text-left">Title</th>
-          <th class="px-4 py-2 border-b text-left">Author</th>
-          <th class="px-4 py-2 border-b text-left">Genre</th>
-          <th class="px-4 py-2 border-b text-left">Year</th>
-          <th class="px-4 py-2 border-b text-left">Availability</th>
-          <th class="px-4 py-2 border-b text-left">Location</th>
-          <th class="px-4 py-2 border-b text-left">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let book of books; let i = index">
-          <td class="px-4 py-2 border-b">{{ i + 1 }}</td>
-          <td class="px-4 py-2 border-b">
-            <img
-          *ngIf="book.coverImageBase64"
-          [src]="book.coverImageBase64.startsWith('data:image') ? book.coverImageBase64 : 'data:image/jpeg;base64,' + book.coverImageBase64"
-          alt="Book Cover"
-          class="w-20 h-full rounded-md"
-        />
-        <div *ngIf="!book.coverImageBase64" class="w-20 h-full p-2 bg-gray-300 flex items-center justify-center rounded-md text-gray-500">
-          No Image Available
-        </div>
-          </td>
-          <td class="px-4 py-2 border-b">{{ book.title }}</td>
-          <td class="px-4 py-2 border-b">{{ book.author }}</td>
-          <td class="px-4 py-2 border-b">{{ book.genre }}</td>
-          <td class="px-4 py-2 border-b">{{ book.publicationYear }}</td>
-          <td class="px-4 py-2 border-b">{{ book.copiesAvailable }}</td>
-          <td class="px-4 py-2 border-b">{{ book.location }}</td>
-          <td class="px-4 py-2 border-b text-center gap-y-2">
-            <div class="">
-              <button
-                (click)="openEditBookModal(book)"
-                class="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-md w-full mb-2"
-              >
-                Edit
-              </button>
-              <button
-                (click)="onDelete(book)"
-                class="bg-red-500 hover:bg-red-600 text-white p-1 rounded-md w-full"
-              >
-                Delete
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </div>
 
 
 <!-- add book -->
 <div *ngIf="isAddBookModalOpen" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
-  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg mx-4 lg:mx-0">
     <button (click)="closeAddBookModal()" class="text-center text-blue-500">
       <svg fill="#000000" height="15px" width="15px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve">
         <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 
@@ -216,7 +225,7 @@
 
 <!-- edit book -->
 <div *ngIf="isEditBookModalOpen" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
-  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg mx-4 lg:mx-0">
     <button (click)="closeEditBookModal()" class="text-center text-blue-500">
       <svg fill="#000000" height="15px" width="15px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 490">
         <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 

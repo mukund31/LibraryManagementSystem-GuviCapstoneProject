@@ -30,7 +30,7 @@ export class BorrowerListComponent {
             (user) => {
               this.borrowedBooks.push({
                 ...book,
-                username: user.username // Add the username to the book object
+                username: user.username
               });
             },
             (error) => {

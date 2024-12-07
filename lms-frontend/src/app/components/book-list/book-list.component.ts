@@ -160,7 +160,7 @@ export class BookListComponent implements OnInit {
   }
 
   openEditBookModal(book: Book): void {
-    this.selectedBook = { ...book }; // Copy selected book data
+    this.selectedBook = { ...book };
     this.isEditBookModalOpen = true;
   }
 
@@ -169,7 +169,7 @@ export class BookListComponent implements OnInit {
   }
 
   onUpdateBook(): void {
-    const bookId = this.selectedBook.bookId || '';  // Fallback to empty string if bookId is undefined
+    const bookId = this.selectedBook.bookId || '';
     if (!bookId) {
       console.error('Book ID is missing');
       return;

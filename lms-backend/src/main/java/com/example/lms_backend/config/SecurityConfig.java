@@ -46,6 +46,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
                 .requestMatchers("/admin/users/**").hasRole("Admin") //
 //
+                .requestMatchers("/user-profile/**").hasAnyRole("Admin", "User")
                 .requestMatchers("/api/books").hasAnyRole("Admin", "User")
                 .requestMatchers("/api/books/**").hasAnyRole("Admin", "User")
                 .requestMatchers("/api/books/search").hasAnyRole("Admin", "User")
@@ -70,7 +71,6 @@ public class SecurityConfig implements WebMvcConfigurer {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-//        configuration.setAllowedOrigins(List.of("http://172.16.242.177:4200"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);

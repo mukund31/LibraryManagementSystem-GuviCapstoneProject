@@ -1,5 +1,13 @@
 <div class="min-h-screen bg-gray-100 p-6">
-    <div class="max-w-7xl mx-auto bg-white p-8 rounded-lg shadow-md">
+  <div class="max-w-7xl mx-auto bg-white p-8 rounded-lg shadow-md">
+      <button [routerLink]="['/admin-dashboard']" 
+        class="flex text-blue-600 hover:text-blue-800 hover:underline text-sm my-4">
+          <svg class="my-1" fill="#0000dd" height="12px" width="12px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+          viewBox="0 0 404.258 404.258" xml:space="preserve">
+          <polygon points="289.927,18 265.927,0 114.331,202.129 265.927,404.258 289.927,386.258 151.831,202.129 "/>
+        </svg>
+        Return to Admin Dashboard
+        </button>
       <h2 class="text-2xl font-semibold text-gray-800 mb-6">Currently Borrowed Books</h2>
       
       <div *ngIf="borrowedBooks.length === 0" class="text-center text-gray-600">

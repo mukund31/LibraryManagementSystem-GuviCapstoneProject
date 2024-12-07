@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserDashboardServiceService {
 
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
 
@@ -20,17 +20,23 @@ export class UserDashboardServiceService {
   }
 
   getBorrowingHistory(userId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${userId}/borrowing-history`, {
+    return this.http.get<any[]>(`${this.apiUrl}/api/${userId}/borrowing-history`, {
       headers: this.getHeaders()});
   }
 
   getTotalBorrowedBooks(userId: string): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/${userId}/total-borrowed-books`, {
+    return this.http.get<number>(`${this.apiUrl}/api/${userId}/total-borrowed-books`, {
       headers: this.getHeaders()});
   }
 
   getTotalPenaltiesPaid(userId: string): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/${userId}/total-penalties`, {
+    return this.http.get<number>(`${this.apiUrl}/api/${userId}/total-penalties`, {
       headers: this.getHeaders()});
+  }
+
+  getUserProfile(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user-profile/${userId}`, {
+      headers: this.getHeaders()
+    });
   }
 }

@@ -3,7 +3,21 @@
         <img src="/libraryIcon.png" alt="LMS Logo" class="h-12">
         <span class="font-bold text-3xl">ReadInn</span>
     </div>
-    <button (click)="onLogout()" class="hover:text-green-500 font-bold">
-        Logout
-    </button>
+    <div class="relative">
+        <img
+              *ngIf="userProfile.profileImageBase64"
+              [src]="userProfile.profileImageBase64.startsWith('data:image') ? userProfile.profileImageBase64 : 'data:image/jpeg;base64,' + userProfile.profileImageBase64"
+              alt="Book Cover"
+              class="w-10 h-full rounded-full"
+              (click)="toggleDropdown()"
+            />
+        <div
+          *ngIf="isDropdownOpen"
+          class="absolute right-0 mt-4  w-40 bg-gray-200 rounded-md shadow-lg z-50"
+        >
+          <ul class="py-2 text-gray-700">
+            <li class="px-4 py-2 hover:bg-gray-300 cursor-pointer" (click)="onLogout()">Logout</li>
+          </ul>
+        </div>
+    </div>
 </div>

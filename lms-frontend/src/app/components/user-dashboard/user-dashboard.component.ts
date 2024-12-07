@@ -17,6 +17,9 @@ export class UserDashboardComponent implements OnInit {
   borrowedBooks: any[] = [];
   totalBooksBorrowed: number = 0;
   overdueBooksCount: number = 0;
+  returnedBooksCount: number = 0;
+  totalPenaltyPaid: number = 0;
+  booksYetToReturn: number = 0;
   loading: boolean = true;
 
   showPenaltyModal: boolean = false;
@@ -55,6 +58,11 @@ export class UserDashboardComponent implements OnInit {
           this.borrowedBooks = response || [];
           this.totalBooksBorrowed = this.borrowedBooks.length;
           this.overdueBooksCount = this.borrowedBooks.filter(book => this.getDaysOverdue(book.dueDate) > 0).length;
+          this.returnedBooksCount = this.borrowedBooks.filter(book => book.status === 'returned').length;
+          this.totalPenaltyPaid = this.borrowedBooks
+          .filter(book => book.status === 'returned' && book.overdueFine > 0)
+          .reduce((sum, book) => sum + book.overdueFine, 0);
+          this.booksYetToReturn = this.borrowedBooks.filter(book => book.status !== 'returned').length;
           this.loading = false;
         },
         error: (err) => {
@@ -76,6 +84,7 @@ export class UserDashboardComponent implements OnInit {
     const diffTime = today.getTime() - due.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
     return diffDays > 0 ? diffDays : 0;
+    // return 10;
   }
 
   calculatePenalty(dueDate: string): number {
@@ -96,8 +105,11 @@ export class UserDashboardComponent implements OnInit {
 
     this.borrowedBookService.returnBook(book.borrowId).subscribe({
       next: (response) => {
-        console.log(response);
-        this.borrowedBooks = this.borrowedBooks.filter(b => b.borrowId !== book.borrowId);
+        // console.log(response);
+        const bookIndex = this.borrowedBooks.findIndex(b => b.borrowId === book.borrowId);
+        if (bookIndex !== -1) {
+          this.borrowedBooks[bookIndex].status = 'returned';
+        }
       },
       error: (err) => {
         console.error('Error returning book:', err);
@@ -107,7 +119,7 @@ export class UserDashboardComponent implements OnInit {
 
     this.returnRecordService.createReturn(this.returnRecord).subscribe(
       (response) => {
-        console.log('Return saved:', response);
+        // console.log('Return saved:', response);
       },
       (error) => {
         console.error('Error saving return:', error);
@@ -123,7 +135,7 @@ export class UserDashboardComponent implements OnInit {
 
     this.borrowingHistoryService.createBorrowingHistory(borrowingHistoryRecord).subscribe(
       (response) => {
-        console.log('Borrowing History saved:', response);
+        // console.log('Borrowing History saved:', response);
       },
       (error) => {
         console.error('Error saving borrowing history:', error);
@@ -163,7 +175,7 @@ export class UserDashboardComponent implements OnInit {
 
     this.returnRecordService.createPenaltyRecord(penaltyRecord).subscribe(
       (response) => {
-        console.log('Penalty saved:', response);
+        // console.log('Penalty saved:', response);
       },
       (error) => {
         console.error('Error saving penalty:', error);
@@ -179,8 +191,12 @@ export class UserDashboardComponent implements OnInit {
 
     this.borrowedBookService.returnBook(this.bookRec.borrowId).subscribe({
       next: (response) => {
-        console.log(response);
-        this.borrowedBooks = this.borrowedBooks.filter(b => b.borrowId !== this.bookRec.borrowId);
+        // console.log(response);
+        const bookIndex = this.borrowedBooks.findIndex(b => b.borrowId === this.bookRec.borrowId);
+        if (bookIndex !== -1) {
+          this.borrowedBooks[bookIndex].status = 'returned';
+        }
+        this.closePenaltyModal();
       },
       error: (err) => {
         console.error('Error returning book:', err);
@@ -190,7 +206,7 @@ export class UserDashboardComponent implements OnInit {
 
     this.returnRecordService.createReturn(this.returnRecord).subscribe(
       (response) => {
-        console.log('Return saved:', response);
+        // console.log('Return saved:', response);
       },
       (error) => {
         console.error('Error saving return:', error);
@@ -206,7 +222,7 @@ export class UserDashboardComponent implements OnInit {
 
     this.borrowingHistoryService.createBorrowingHistory(borrowingHistoryRecord).subscribe(
       (response) => {
-        console.log('Borrowing History saved:', response);
+        // console.log('Borrowing History saved:', response);
       },
       (error) => {
         console.error('Error saving borrowing history:', error);

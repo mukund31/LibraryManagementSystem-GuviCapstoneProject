@@ -27,15 +27,6 @@ public class AuthController {
     @Autowired
     private final PlatformAccessService platformAccessService;
 
-//    @GetMapping("/user")
-//    public ResponseEntity<?> getUserDetails(@RequestHeader("Authorization") String authHeader) {
-//        String token = authHeader.replace("Bearer ", "");
-//        Map<String, Object> claims = JwtUtil.decodeJwt(token);
-//        String userId = (String) claims.get("sub");  // Assumes 'sub' contains user ID.
-//
-//        return ResponseEntity.ok(userId);
-//    }
-
     @PostMapping("/register")
     public String register(@RequestBody UserData userData) {
         System.out.println(userData);

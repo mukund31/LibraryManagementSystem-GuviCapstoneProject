@@ -53,4 +53,8 @@ export class RegisterComponent {
       reader.readAsDataURL(file);
     }
   }
+
+  goToLogin() {
+    this.router.navigate(['/login'])
+  }
 }
