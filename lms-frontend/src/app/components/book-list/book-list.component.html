@@ -12,7 +12,7 @@
     <div class="mb-4 flex justify-between items-center">
       <h2 class="text-2xl font-semibold">Books List</h2>
       <div >
-        <button [routerLink]="['/admin/add-book']" 
+        <button (click)="openAddBookModal()" 
           class="bg-green-500 px-2 py-2 rounded-md text-white font-bold mr-2"
         >Add Book</button>
         <input
@@ -82,5 +82,132 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+
+<div *ngIf="isAddBookModalOpen" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <button (click)="closeAddBookModal()" class="mt-4 text-center text-blue-500">
+      <svg fill="#000000" height="15px" width="15px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+        viewBox="0 0 490 490" xml:space="preserve">
+      <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 
+        489.292,457.678 277.331,245.004 489.292,32.337 "/>
+      </svg>
+    </button>
+    <h2 class="text-xl font-semibold mb-4 text-center">Add New Book</h2>
+    <form (ngSubmit)="onSubmit()" #bookForm="ngForm" class="space-y-4">
+      <div>
+        <label for="title" class="block font-medium">Title</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          [(ngModel)]="book.title"
+          required
+          class="w-full px-4 py-2 border rounded-md"
+        />
+      </div>
+
+      <div>
+        <label for="author" class="block font-medium">Author</label>
+        <input
+          type="text"
+          id="author"
+          name="author"
+          [(ngModel)]="book.author"
+          required
+          class="w-full px-4 py-2 border rounded-md"
+        />
+      </div>
+
+      <div>
+        <label for="genre" class="block font-medium">Genre</label>
+        <input
+          type="text"
+          id="genre"
+          name="genre"
+          [(ngModel)]="book.genre"
+          required
+          class="w-full px-4 py-2 border rounded-md"
+        />
+      </div>
+
+      <div>
+        <label for="isbn" class="block font-medium">ISBN</label>
+        <input
+          type="text"
+          id="isbn"
+          name="isbn"
+          [(ngModel)]="book.isbn"
+          required
+          class="w-full px-4 py-2 border rounded-md"
+        />
+      </div>
+
+      <div class="flex gap-x-4">
+        <div>
+          <label for="publicationYear" class="block font-medium">Publication Year</label>
+          <input
+            type="number"
+            id="publicationYear"
+            name="publicationYear"
+            [(ngModel)]="book.publicationYear"
+            required
+            class="w-full px-4 py-2 border rounded-md"
+          />
+        </div>
+
+        <div>
+          <label for="copiesAvailable" class="block font-medium">Copies Available</label>
+          <input
+            type="number"
+            id="copiesAvailable"
+            name="copiesAvailable"
+            [(ngModel)]="book.copiesAvailable"
+            required
+            class="w-full px-4 py-2 border rounded-md"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="location" class="block font-medium">Location</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          [(ngModel)]="book.location"
+          required
+          class="w-full px-4 py-2 border rounded-md"
+        />
+      </div>
+
+      <div>
+        <label for="bookCoverImage" class="block font-medium">Book Cover Image</label>
+        <input
+          type="file"
+          id="bookCoverImage"
+          name="bookCoverImage"
+          (change)="onFileChange($event)"
+          class="w-full px-4 py-2 border rounded-md"
+        />
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="!bookForm.valid"
+        class="w-full bg-blue-500 text-white py-2 rounded-md"
+      >
+        Add Book
+      </button>
+    </form>
+
+    <div *ngIf="successMessage" class="mt-4 text-green-500 text-center">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="mt-4 text-red-500 text-center">
+      {{ errorMessage }}
+    </div>
   </div>
 </div>

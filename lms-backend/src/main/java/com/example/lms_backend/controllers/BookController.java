@@ -47,12 +47,7 @@ public class BookController {
     public long getTotalBooksCount() {
         return bookService.getTotalBooksCount();
     }
-
-//    @GetMapping("/search")
-//    public List<Book> searchBooks(@RequestParam String query) {
-//        return bookService.searchBooks(query);
-//    }
-
+    
     @PostMapping("/search")
     public List<Book> searchBooks(@RequestBody SearchLogs searchLogs) {
 //        System.out.println(searchLogs);
