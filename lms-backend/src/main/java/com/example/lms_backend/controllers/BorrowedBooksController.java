@@ -68,7 +68,6 @@ public class BorrowedBooksController {
         borrowedBooks.setTitle(book.getTitle());
         borrowedBooksRepository.save(borrowedBooks);
 
-        // Update book availability
         book.setCopiesAvailable(book.getCopiesAvailable() - 1);
         bookRepository.save(book);
 

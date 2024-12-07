@@ -14,6 +14,11 @@ export class BookListComponent implements OnInit {
   books: Book[] = [];
   searchQuery: string = '';
 
+  page: number = 0;
+  size: number = 10;
+  loading: boolean = false;
+  hasMore: boolean = true;
+
   constructor(private bookService: BookService,
     private router: Router,
     private authService: AuthService
@@ -24,14 +29,43 @@ export class BookListComponent implements OnInit {
   }
 
   fetchBooks(): void {
-    this.bookService.getAllBooks().subscribe(
-      (books: Book[]) => {
-        this.books = books;
+    if (this.loading || !this.hasMore) return;
+
+    this.loading = true;
+
+    this.bookService.loadBooks(this.page, this.size).subscribe({
+      next: (response) => {
+        this.books = [...this.books, ...response.content];
+        this.hasMore = !response.last;
+        this.page++;
+        this.loading = false;
       },
-      (error) => {
-        console.error('Error fetching books:', error);
-      }
-    );
+      error: (err) => {
+        console.error('Error loading books:', err);
+        this.loading = false;
+      },
+    });
+
+    
+    // this.bookService.getAllBooks().subscribe(
+    //   (books: Book[]) => {
+    //     this.books = books; 
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching books:', error);
+    //   }
+    // );
+  }
+
+  onScroll(event: Event): void {
+    const element = event.target as HTMLElement;
+    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 100;
+    
+    if (atBottom && !this.loading && this.hasMore) {
+      // setTimeout(() => {
+        this.fetchBooks();
+      // }, 300);
+    }
   }
 
   onSearch(): void {

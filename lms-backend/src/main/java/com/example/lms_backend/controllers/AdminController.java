@@ -41,7 +41,6 @@ public class AdminController {
 
     @GetMapping("/overdue-books")
     public List<BorrowedBooks> getOverdueBooks() {
-//        LocalDate today = LocalDate.now().plusDays(16); // 16 added to check working
         LocalDate today = LocalDate.now();
         List<BorrowedBooks> overDueBooks = borrowedBooksRepository.findByDueDateBeforeAndStatus(today, "borrowed");
 //        System.out.println(overDueBooks);

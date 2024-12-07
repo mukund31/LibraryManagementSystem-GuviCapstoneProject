@@ -33,8 +33,6 @@ public class BookService {
 
         List<Book> searchResult = new ArrayList<>(uniqueBooks);
 
-//        SearchLogs searchLog = new SearchLogs();
-//        System.out.println("User id: "+searchLog.getUserId());
         searchLog.setSearchQuery(query);
         searchLog.setDate(new Date());
         searchLog.setResultCount(searchResult.size());

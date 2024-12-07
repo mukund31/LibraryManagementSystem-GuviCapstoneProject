@@ -1,76 +1,91 @@
 <div class="container mx-auto p-4 w-2/3">
-  <h2 class="text-2xl font-bold text-center mb-6">Book Catalog</h2>
-
-  <div class="mb-4 flex items-center">
-    <input
-      type="text"
-      [(ngModel)]="searchQuery"
-      placeholder="Search"
-      (input)="searchBooks()"
-      class="input p-2 border rounded-md mr-2 flex-grow"
-    />
-    <button
-      (click)="searchBooks()"
-      class="btn btn-primary px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-    >
-      Search
-    </button>
-  </div>
-
-  <div class="mb-6 flex justify-between">
+  <style>
+    .book-list::-webkit-scrollbar {
+      display: none;
+    }
+    .book-list {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+  <div class="book-list h-screen overflow-y-scroll" (scroll)="onScroll($event)">
     <div>
-      <label class="mr-4">
-        <input type="checkbox" [(ngModel)]="searchTypes[0]" class="mr-1"/> 
-        Title
-      </label>
-      <label class="mr-4">
-        <input type="checkbox" [(ngModel)]="searchTypes[1]" class="mr-1"/>
-        Author
-      </label>
-      <label class="mr-4">
-        <input type="checkbox" [(ngModel)]="searchTypes[2]" class="mr-1"/>
-        Genre
-      </label>
-    </div>
-    <button
-      [routerLink]="['/user-dashboard']"
-      class="btn btn-primary px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-700"
-    >
-      Go to User Dashboard
-    </button>
-  </div>
-
-  <div *ngIf="noResultsFound" class="text-center text-red-500">
-    No books found
-  </div>
-
-  <div class="grid grid-cols-2 gap-x-4">
-    <div
-      *ngFor="let book of books"
-      class="book-item bg-white p-4 rounded-md shadow-xl cursor-pointer hover:shadow-lg transition flex gap-4 my-2"
-      (click)="openModal(book)"
-    >
-      <div class="flex justify-center">
-        <img
-          *ngIf="book.coverImageBase64"
-          [src]="book.coverImageBase64.startsWith('data:image') ? book.coverImageBase64 : 'data:image/jpeg;base64,' + book.coverImageBase64"
-          alt="Book Cover"
-          class="w-28 h-full rounded-md"
+      <h2 class="text-2xl font-bold text-center mb-6">Book Catalog</h2>
+      <div class="mb-4 flex items-center">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          placeholder="Search"
+          (input)="searchBooks()"
+          class="input p-2 border rounded-md mr-2 flex-grow"
         />
-        <div *ngIf="!book.coverImageBase64" class="w-full h-full p-2 bg-gray-300 flex items-center justify-center rounded-md text-gray-500">
-          No Image Available
-        </div>
+        <button
+          (click)="searchBooks()"
+          class="btn btn-primary px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+        >
+          Search
+        </button>
       </div>
-      <div>
-        <h3 class="text-xl font-semibold mb-2">{{ book.title }}</h3>
-        <p class="mb-1">Author: {{ book.author }}</p>
-        <p class="mb-1">Genre: {{ book.genre }}</p>
-        <p class="mb-1">ISBN: {{ book.isbn }}</p>
-        <p class="mb-1">Copies Available: {{ book.copiesAvailable }}</p>
-        <p>Location: {{ book.location }}</p>
+    
+      <div class="mb-6 flex justify-between">
+        <div>
+          <label class="mr-4">
+            <input type="checkbox" [(ngModel)]="searchTypes[0]" class="mr-1"/> 
+            Title
+          </label>
+          <label class="mr-4">
+            <input type="checkbox" [(ngModel)]="searchTypes[1]" class="mr-1"/>
+            Author
+          </label>
+          <label class="mr-4">
+            <input type="checkbox" [(ngModel)]="searchTypes[2]" class="mr-1"/>
+            Genre
+          </label>
+        </div>
+        <button
+          [routerLink]="['/user-dashboard']"
+          class="btn btn-primary px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-700"
+        >
+          Go to User Dashboard
+        </button>
+      </div>
+    
+      <div *ngIf="noResultsFound" class="text-center text-red-500">
+        No books found
       </div>
     </div>
-  </div>
+
+    <div class="grid grid-cols-2 gap-x-4">
+        <div
+          *ngFor="let book of books"
+          class="book-item bg-white p-4 rounded-md shadow-xl cursor-pointer hover:shadow-lg transition flex gap-4 my-2"
+          (click)="openModal(book)"
+        >
+          <div class="flex justify-center">
+            <img
+              *ngIf="book.coverImageBase64"
+              [src]="book.coverImageBase64.startsWith('data:image') ? book.coverImageBase64 : 'data:image/jpeg;base64,' + book.coverImageBase64"
+              alt="Book Cover"
+              class="w-28 h-full rounded-md"
+            />
+            <div *ngIf="!book.coverImageBase64" class="w-full h-full p-2 bg-gray-300 flex items-center justify-center rounded-md text-gray-500">
+              No Image Available
+            </div>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold mb-2">{{ book.title }}</h3>
+            <p class="mb-1">Author: {{ book.author }}</p>
+            <p class="mb-1">Genre: {{ book.genre }}</p>
+            <p class="mb-1">ISBN: {{ book.isbn }}</p>
+            <p class="mb-1">Copies Available: {{ book.copiesAvailable }}</p>
+            <p>Location: {{ book.location }}</p>
+          </div>
+        </div>
+    
+      </div>
+      <div *ngIf="loading" class="text-center mt-4">Loading more books...</div>
+    </div>
+
 
   <div *ngIf="isModalOpen" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">

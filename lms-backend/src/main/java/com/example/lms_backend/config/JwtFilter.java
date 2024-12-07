@@ -29,16 +29,13 @@ public class JwtFilter extends OncePerRequestFilter {
             throws IOException, ServletException {
 
         String authHeader = request.getHeader("Authorization");
-//        System.out.println("AuthHeader: "+authHeader);
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-//            System.out.println("Token36: "+token);
 
             try {
                 String username = jwtUtil.extractUsername(token);
                 String role = jwtUtil.extractRole(token);
-//                System.out.println("ROLE: "+role);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             username, null, List.of(new SimpleGrantedAuthority(role))); // Add authorities (roles) if needed

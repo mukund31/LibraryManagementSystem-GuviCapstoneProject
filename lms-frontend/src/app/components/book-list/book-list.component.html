@@ -1,5 +1,14 @@
 <div class="min-h-screen flex justify-center bg-gray-100">
-  <div class="book-list-container bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl">
+  <style>
+    .book-list-container::-webkit-scrollbar {
+      display: none;
+    }
+    .book-list-container {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+  <div class="book-list-container bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl h-screen overflow-y-scroll" (scroll)="onScroll($event)">
     <div class="mb-4 flex justify-between items-center">
       <h2 class="text-2xl font-semibold">Books List</h2>
       <div >
@@ -42,8 +51,11 @@
           *ngIf="book.coverImageBase64"
           [src]="book.coverImageBase64.startsWith('data:image') ? book.coverImageBase64 : 'data:image/jpeg;base64,' + book.coverImageBase64"
           alt="Book Cover"
-          class="w-28 h-full rounded-md"
+          class="w-20 h-full rounded-md"
         />
+        <div *ngIf="!book.coverImageBase64" class="w-20 h-full p-2 bg-gray-300 flex items-center justify-center rounded-md text-gray-500">
+          No Image Available
+        </div>
           </td>
           <td class="px-4 py-2 border-b">{{ book.title }}</td>
           <td class="px-4 py-2 border-b">{{ book.author }}</td>

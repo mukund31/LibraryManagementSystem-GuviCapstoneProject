@@ -5,15 +5,14 @@ import com.example.lms_backend.models.Book;
 import com.example.lms_backend.models.SearchLogs;
 import com.example.lms_backend.repositories.BookRepository;
 import com.example.lms_backend.services.BookService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -28,9 +27,15 @@ public class BookController {
     @Autowired
     private final BookService bookService;
 
+//    @GetMapping("/all")
+//    public List<Book> getAllBooks() {
+//        return bookRepository.findAll();
+//    }
+
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public Page<Book> getBooks(@RequestParam int page, @RequestParam int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository.findAll(pageable);
     }
 
     @GetMapping("/unique-count")
@@ -88,7 +93,6 @@ public class BookController {
         if (existingBook.isPresent()) {
             Book book = existingBook.get();
 
-            // Do not update the `id` field
             book.setTitle(bookDetails.getTitle());
             book.setAuthor(bookDetails.getAuthor());
             book.setGenre(bookDetails.getGenre());
@@ -98,7 +102,6 @@ public class BookController {
             book.setLocation(bookDetails.getLocation());
             book.setCoverImageBase64(bookDetails.getCoverImageBase64());
 
-            // Save the updated book, but the `id` remains unchanged
             Book updatedBook = bookRepository.save(book);
             return ResponseEntity.ok(updatedBook);
         } else {

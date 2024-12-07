@@ -79,6 +79,17 @@ export class BookService {
       headers: this.getHeaders()});
   }
 
+  loadBooks(page: number, size: number): Observable<{ content: Book[]; last: boolean }> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+      
+    return this.http.get<{ content: Book[]; last: boolean }>(this.apiUrl, {
+      headers: this.getHeaders(),
+      params,
+    });
+  }
+
   getBookById(bookId: string): Observable<Book> {
     return this.http.get<Book>(`${this.apiUrl}/${bookId}`, {
       headers: this.getHeaders()});

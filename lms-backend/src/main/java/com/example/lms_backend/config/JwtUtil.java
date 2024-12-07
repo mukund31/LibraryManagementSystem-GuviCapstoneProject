@@ -28,7 +28,6 @@ public class JwtUtil {
         claims.put("userId", user.getId());
         claims.put("role", "ROLE_"+user.getRole());
 
-//        System.out.println("KEY: "+SECRET_KEY);
 
         String tokenGen= Jwts.builder()
                 .setClaims(claims)
@@ -37,7 +36,6 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
-//        System.out.println("TOKEN GENERATED: " + tokenGen);
         return tokenGen;
     }
 
@@ -57,7 +55,6 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .get("role");
-//        System.out.println("Extracted role: "+ extractedRole);
         return extractedRole;
     }
 }

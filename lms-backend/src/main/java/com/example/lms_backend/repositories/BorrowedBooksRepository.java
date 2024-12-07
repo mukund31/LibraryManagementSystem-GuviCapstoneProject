@@ -1,6 +1,5 @@
 package com.example.lms_backend.repositories;
 
-import com.example.lms_backend.models.Book;
 import com.example.lms_backend.models.BorrowedBooks;
 import com.example.lms_backend.models.TopBookStats;
 import org.springframework.data.mongodb.repository.Aggregation;

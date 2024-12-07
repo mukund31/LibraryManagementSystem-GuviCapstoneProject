@@ -3,6 +3,7 @@ import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 import { AuthService } from '../../services/auth.service';
 import { BorrowedBooksService } from '../../services/borrowed-books.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-book-catalog-component',
@@ -21,13 +22,49 @@ export class BookCatalogComponentComponent {
   selectedBook: Book | null = null;
   isModalOpen: boolean = false;
 
+  page: number = 0;
+  size: number = 10;
+  loading: boolean = false;
+  hasMore: boolean = true;
+
   constructor(private bookService: BookService,
     private authService: AuthService,
-    private borrowBookService: BorrowedBooksService
+    private borrowBookService: BorrowedBooksService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
-    this.getAllBooks();
+    this.loadBooks();
+  }
+
+  loadBooks(): void {
+    if (this.loading || !this.hasMore) return;
+
+    this.loading = true;
+
+    this.bookService.loadBooks(this.page, this.size).subscribe({
+      next: (response) => {
+        this.books = [...this.books, ...response.content];
+        this.hasMore = !response.last;
+        this.page++;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading books:', err);
+        this.loading = false;
+      },
+    });
+  }
+
+  onScroll(event: Event): void {
+    const element = event.target as HTMLElement;
+    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 100;
+    
+    if (atBottom && !this.loading && this.hasMore) {
+      // setTimeout(() => {
+        this.loadBooks();
+      // }, 300);
+    }
   }
   
   getAllBooks(): void {

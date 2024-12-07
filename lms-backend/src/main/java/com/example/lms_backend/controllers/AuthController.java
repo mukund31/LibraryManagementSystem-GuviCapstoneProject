@@ -12,9 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.Optional;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -49,7 +46,6 @@ public class AuthController {
             if (authService.validateUser(user.getUsername(), user.getPassword())) {
                 String token = jwtUtil.generateToken(user.getUsername());
                 String role = authService.getUserRole(user.getUsername());
-//                Optional<User> fullUserOptional = authService.getUserByUsername(user.getUsername());
                 String userId = authService.getUserId(user.getUsername());
 
                 String userAgent = request.getHeader("User-Agent");

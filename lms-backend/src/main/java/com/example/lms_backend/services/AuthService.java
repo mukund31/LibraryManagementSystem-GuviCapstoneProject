@@ -33,9 +33,6 @@ public class AuthService {
         catch(Exception e) {
             return "Server Error";
         }
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        userRepository.save(user);
-//        return "User registered successfully!";
     }
 
     public boolean validateUser(String username, String password) {
@@ -63,18 +60,6 @@ public class AuthService {
         return userOpt.map(User::getId).orElse("");
     }
 
-//    public String getUserId() {
-//        String token = getTokenFromContext();
-//        if (token != null) {
-//            Claims claims = Jwts.parser()
-//                    .setSigningKey(secretKey)
-//                    .parseClaimsJws(token)
-//                    .getBody();
-//            return (String) claims.get("userId"); // Extract userId from claims
-//        }
-//        return null;
-//    }
-
     public String getUserId() {
         String token = getTokenFromContext();
         if (token != null) {
@@ -85,17 +70,11 @@ public class AuthService {
                         .getBody();
                 return (String) claims.get("userId");
             } catch (Exception e) {
-                // Log the exception
                 System.err.println("Token parsing error: " + e.getMessage());
             }
         }
         return null;
     }
-
-
-//    private String getTokenFromContext() {
-//        return (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-//    }
 
     private String getTokenFromContext() {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
@@ -109,8 +88,6 @@ public class AuthService {
         }
         return null;
     }
-
-
 
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
